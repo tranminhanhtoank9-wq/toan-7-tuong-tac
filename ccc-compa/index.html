@@ -1,0 +1,1492 @@
+<!doctype html>
+<html lang="vi" data-version="2026-11-02-compact">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Cùng ba cạnh — Khám phá hai tam giác</title>
+<style>
+:root{
+  --bg:#f6f5f0;
+  --paper:#fff;
+  --ink:#202a3d;
+  --muted:#5e697b;
+  --line:#dfe3e9;
+  --blue:#4852b4;
+  --blue-soft:#eeeffb;
+  --teal:#087568;
+  --teal-soft:#e7f5f0;
+  --orange:#ab531b;
+  --orange-soft:#fff1df;
+  --shadow:0 12px 34px #27365509;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Tahoma,Arial,sans-serif}
+button,textarea{font:inherit}
+button{cursor:pointer;min-height:42px;border:1px solid var(--line);border-radius:12px;padding:9px 15px;background:#fff;color:var(--ink);font-weight:600;transition:background .15s,transform .15s,border-color .15s}
+button:hover:not(:disabled){background:#f0f2f7}
+button:active:not(:disabled){transform:translateY(1px)}
+button:disabled{cursor:default;opacity:.43}
+button:focus-visible,textarea:focus-visible,svg:focus-visible,.movable:focus-visible{outline:3px solid #d57927;outline-offset:4px}
+button.primary{background:var(--blue);border-color:var(--blue);color:white}
+button.primary:hover:not(:disabled){background:#343e99}
+button.teal{background:var(--teal);border-color:var(--teal);color:white}
+button.teal:hover:not(:disabled){background:#055d52}
+button.quiet{background:transparent;border-color:transparent;color:var(--muted)}
+button.small{padding:7px 12px;font-size:14px;min-height:38px}
+button[aria-pressed="true"]{background:var(--blue-soft);border-color:var(--blue);color:var(--blue)}
+[hidden]{display:none!important}
+h1,h2,h3,p{margin:0}
+h1{font-size:clamp(26px,3.6vw,40px);line-height:1.24;letter-spacing:-.8px;font-weight:700}
+h2{font-size:23px;line-height:1.35}
+h3{font-size:19px}
+.muted{color:var(--muted)}
+.wrap{max-width:1200px;margin:auto;padding:24px 26px 22px}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+.brand{display:flex;gap:10px;align-items:center;font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--blue);text-transform:uppercase}
+.brand svg{width:30px;height:30px}
+.meta{display:flex;gap:8px;flex-wrap:wrap}
+.badge{border:1px solid var(--line);border-radius:99px;padding:5px 12px;font-size:13px;background:#ffffffa8;color:var(--muted)}
+.hero{display:flex;justify-content:space-between;gap:24px;align-items:flex-end}
+.hero p{max-width:680px;color:var(--muted);margin-top:10px;font-size:16px}
+.reset-top{white-space:nowrap;font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0 18px;padding:0;list-style:none}
+.step-btn{width:100%;display:flex;align-items:center;text-align:left;gap:11px;padding:11px 14px;background:transparent;font-size:15px;border-color:transparent}
+.step-num{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#e8e9e7;color:#606b77;flex-shrink:0;font-size:14px}
+.step-btn[aria-current="step"]{background:white;border-color:var(--line);box-shadow:var(--shadow)}
+.step-btn[aria-current="step"] .step-num{background:var(--blue);color:white}
+.step-btn.done .step-num{background:var(--teal-soft);color:var(--teal)}
+.step-btn small{display:block;font-size:12px;color:var(--muted);font-weight:400;margin-top:1px}
+.surface{background:white;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
+.phase-head{padding:20px 24px 16px;display:flex;justify-content:space-between;align-items:center;gap:14px;border-bottom:1px solid #edf0f3}
+.eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--teal);margin-bottom:5px}
+.phase-sub{color:var(--muted);font-size:14px;margin-top:5px}
+.time{font-size:13px;border-radius:99px;background:var(--bg);padding:6px 12px;white-space:nowrap;color:var(--muted)}
+.build-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:18px 22px 14px}
+.triangle-card{border:1.5px solid var(--line);border-radius:18px;overflow:hidden;position:relative;background:#fdfefe;transition:border-color .2s,box-shadow .2s}
+.triangle-card.active{border-color:#6873cf;box-shadow:0 0 0 3px #eeeffb}
+.triangle-card.complete{border-color:#8cc9b8}
+.card-top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px 4px;gap:10px;flex-wrap:wrap}
+.person{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700}
+.person-num{width:26px;height:26px;display:grid;place-items:center;background:var(--blue-soft);border-radius:8px;color:var(--blue);font-size:12px}
+.card-order{font-size:12px;color:var(--muted);width:100%;margin-top:2px;padding-left:34px}
+.card-tag{font-size:12px;border-radius:99px;background:#f1f3f6;color:var(--muted);padding:3px 9px}
+.complete .card-tag{color:var(--teal);background:var(--teal-soft)}
+.drawing{display:block;width:100%;aspect-ratio:460/360;touch-action:none;user-select:none;-webkit-user-select:none}
+.drawing text,.board-svg text{font-family:Tahoma,Arial,sans-serif}
+.point-label{font-size:18px;font-weight:700;pointer-events:none}
+.edge-label{font-size:14px;fill:#4d5b70;font-weight:600;paint-order:stroke;stroke:#fff;stroke-width:5px;stroke-linejoin:round;pointer-events:none}
+.arc{fill:none;stroke-width:2.3;stroke-dasharray:6 5}
+.arc-live{fill:none;stroke-width:3;stroke-linecap:round}
+.vertex-hit{cursor:pointer}
+.vertex-hit:hover circle.ring{stroke-width:3;opacity:1}
+.ruler-tick{cursor:pointer}
+.compass-drag{cursor:grab}
+.compass-drag:active,.compass-dragging .compass-drag{cursor:grabbing}
+.build-dots{display:flex;align-items:center;gap:5px;padding:4px 16px 12px;color:var(--muted);font-size:12px}
+.build-dot{height:5px;flex:1;border-radius:99px;background:#e9ecf0}
+.build-dot.filled{background:var(--teal)}
+.build-number{margin-left:7px;font-weight:600}
+.builder{margin:0 22px 18px;border-radius:15px;background:#f6f7fc;padding:15px 18px;border:1px solid #e5e8f4}
+.build-prompt{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:10px;flex-wrap:wrap}
+.prompt-left{display:flex;align-items:flex-start;gap:11px}
+.turn-badge{background:var(--blue);color:white;border-radius:8px;padding:4px 9px;font-size:12px;white-space:nowrap;margin-top:2px}
+.prompt-title{font-weight:700;font-size:16px}
+.prompt-note{font-size:13.5px;color:var(--muted);margin-top:2px}
+.direct-badges{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;padding:4px 10px;border-radius:99px;background:#fff;border:1px solid var(--line);color:var(--ink);font-weight:600}
+.chip b{color:var(--blue)}
+.controls-line{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:8px;border-top:1px dashed #dce1ee}
+.quick-group{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+.choice-group{border:0;margin:0;padding:0;display:flex;align-items:center;gap:6px}
+.choice-group legend{font-size:12px;color:var(--muted);margin-right:6px;float:left}
+.choice-row{display:inline-flex;gap:5px}
+.choice-row button{padding:6px 12px;min-width:54px;min-height:36px;font-size:13.5px}
+.message{font-size:14px;margin-top:10px;min-height:22px;color:var(--muted);font-weight:500}
+.message.error{color:#a13a1c}
+.message.good{color:var(--teal)}
+.phase-bottom{padding:15px 22px;background:#fafbf9;border-top:1px solid #edf0f3;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.phase-bottom p{font-size:13px;color:var(--muted);max-width:680px}
+.phase-bottom button{flex-shrink:0}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--muted);flex-wrap:wrap;align-items:center}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.swatch{width:20px;height:4px;background:var(--blue);border-radius:3px}
+.swatch.teal{background:var(--teal)}
+.compare-toolbar{display:flex;align-items:center;justify-content:space-between;padding:14px 22px 6px;gap:12px;flex-wrap:wrap}
+.transform-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.transform-tools svg{width:18px;height:18px;vertical-align:-4px;margin-right:5px}
+.board-wrap{margin:8px 22px 0;border:1px solid #e2e7e8;border-radius:16px;background-color:#fcfdfc;background-image:radial-gradient(#ccd6d5 1px,transparent 1px);background-size:22px 22px;overflow:hidden;position:relative}
+.board-svg{display:block;width:100%;height:auto;aspect-ratio:1000/450;min-height:310px;touch-action:none;user-select:none;-webkit-user-select:none}
+.movable{cursor:grab}
+.movable.dragging{cursor:grabbing}
+.movable:focus-visible .face{stroke:#b96b22;stroke-width:4}
+.vertex-rotate-handle{cursor:grab}
+.vertex-rotate-handle:hover .v-ring{stroke:#d57927;stroke-width:3;fill:#fff4e8}
+.flip-axis-handle{cursor:ew-resize}
+.flip-axis-handle:hover .flip-pill{fill:#055d52}
+.target-line{stroke:var(--blue);stroke-width:2.6;fill:#4852b40c;stroke-linejoin:round}
+.face{stroke:var(--teal);stroke-width:2.8;fill:#08917a24;stroke-linejoin:round}
+.matched-line{stroke-dasharray:10 7;stroke-width:3.7}
+.board-caption{text-align:center;font-size:11.5px;color:var(--muted);margin:8px 18px 0}
+.compare-foot{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:10px 22px 16px}
+.board-help{font-size:13px;max-width:680px;color:var(--muted)}
+.nudge-pad{display:flex;gap:5px;flex-shrink:0}
+.nudge-pad button{width:42px;padding:7px;font-size:18px}
+.status-row{padding:0 22px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.match-status{border-radius:10px;padding:10px 14px;background:var(--blue-soft);font-size:14px;flex:1;color:#3c4694}
+.match-status.success{color:var(--teal);background:var(--teal-soft)}
+.angle-panel{margin:0 22px 20px;padding:16px;background:var(--teal-soft);border-radius:14px}
+.angle-head{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:12px}
+.angle-head h3{font-size:16px;color:var(--teal)}
+.angle-head small{font-size:12px;color:var(--muted)}
+.angle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.angle-card{background:white;border:1px solid #cde4da;border-radius:10px;padding:10px 8px;text-align:center}
+.angle-equation{display:flex;align-items:center;justify-content:center;gap:4px;font-size:15px;white-space:nowrap}
+.hat{width:46px;height:31px;overflow:visible;vertical-align:middle;flex-shrink:0}
+.hat.prime{width:61px}
+.hat text{font:17px Tahoma,Arial,sans-serif;fill:var(--ink)}
+.hat path{stroke:var(--ink);fill:none;stroke-width:1.2}
+.response-body{padding:26px;max-width:850px;margin:auto}
+.question-marker{font-size:13px;color:var(--teal);font-weight:700;display:flex;align-items:center;gap:8px}
+.question-marker span{width:25px;height:25px;background:var(--teal-soft);display:grid;place-items:center;border-radius:7px}
+.question{font-size:clamp(19px,2.4vw,24px);font-weight:600;line-height:1.55;margin:14px 0}
+.think-note{color:var(--muted);font-size:14px;margin-bottom:20px}
+textarea{display:block;resize:vertical;width:100%;border:1px solid #bdc5d1;border-radius:13px;background:#fdfefd;min-height:106px;padding:14px 16px;color:var(--ink);line-height:1.6}
+textarea::placeholder{color:#7a8492}
+.input-meta{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-top:6px;color:var(--muted);font-size:12px}
+.response-actions{display:flex;gap:9px;align-items:center;margin-top:17px;flex-wrap:wrap}
+.hint-box{font-size:14px;background:var(--orange-soft);color:#79441d;padding:12px 15px;border-radius:10px;margin-top:15px}
+.submitted{background:#f5f7fa;border:1px solid var(--line);padding:18px;border-radius:14px}
+.submitted .eyebrow{color:var(--muted)}
+.own-answer{font-size:17px;white-space:pre-wrap;overflow-wrap:anywhere;margin:9px 0 14px}
+.submitted-note{font-size:13px;color:var(--muted)}
+.reveal-action{margin-top:20px}
+.knowledge{margin-top:22px;padding:24px;border:1px solid #edc998;background:#fff5e7;border-radius:16px}
+.knowledge .eyebrow{color:var(--orange)}
+.knowledge h3{font-size:22px;margin-bottom:13px;color:#7b3d15}
+.theorem{font-size:20px;line-height:1.65;font-weight:600}
+.application{margin-top:20px;padding-top:18px;border-top:1px solid #edd6b6;font-size:15px;line-height:1.9}
+.application .equalities{display:flex;gap:6px 20px;flex-wrap:wrap;margin-bottom:6px}
+.knowledge-note{font-size:13px;color:#6c5949;margin-top:15px}
+.summary{margin-top:20px;border:1px solid #c6e0d5;background:#f1f9f5;border-radius:13px;padding:18px}
+.summary h3{font-size:17px;color:var(--teal)}
+.summary-list{display:flex;gap:9px 22px;flex-wrap:wrap;font-size:13px;margin:10px 0 0;padding:0;list-style:none;color:#2f6252}
+.summary-list li:before{content:"✓ ";font-weight:700}
+.footer{display:flex;justify-content:space-between;gap:15px;margin-top:18px;font-size:11px;color:#66717d}
+.footer span{max-width:70%}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.noscript{padding:20px;background:#fff1df;color:#75421a}
+.dialog{border:1px solid var(--line);border-radius:20px;padding:26px;max-width:420px;width:calc(100% - 36px);box-shadow:0 20px 80px #1a244533}
+.dialog::backdrop{background:#1d294866}
+.dialog p{color:var(--muted);margin:10px 0 20px}
+.dialog-actions{display:flex;justify-content:flex-end;gap:8px}
+@media(min-width:920px){.triangle-card .drawing{max-height:345px}}
+@media(max-width:760px){
+  .wrap{padding:18px 14px}
+  .hero{gap:12px;align-items:flex-start}
+  .hero p{font-size:14px}
+  .reset-top{padding:8px;font-size:12px}
+  .steps{gap:4px;margin:18px 0 14px}
+  .step-btn{padding:9px 8px;gap:7px;font-size:13px}
+  .step-num{width:28px;height:28px}
+  .step-btn small{font-size:11px}
+  .phase-head{padding:16px}
+  .phase-head h2{font-size:20px}
+  .build-grid{padding:14px 14px 10px;gap:12px;grid-template-columns:1fr}
+  .card-order{padding-left:0}
+  .builder{margin:0 14px 15px;padding:14px}
+  .phase-bottom{padding:14px 16px;gap:12px}
+  .phase-bottom p{font-size:12px}
+  .compare-toolbar{padding:14px 14px 6px}
+  .board-wrap{margin:8px 14px 0}
+  .board-svg{aspect-ratio:620/650;min-height:0;max-height:520px}
+  .compare-foot{padding:10px 14px 14px;align-items:flex-start;flex-direction:column;gap:10px}
+  .nudge-pad{align-self:center}
+  .status-row{padding:0 14px 14px}
+  .angle-panel{margin:0 14px 16px}
+  .angle-grid{grid-template-columns:1fr}
+  .response-body{padding:20px 16px}
+}
+@media(max-width:450px){
+  .brand{font-size:11px;gap:6px;letter-spacing:.04em}
+  .badge{font-size:11px;padding:4px 8px}
+  .hero h1{font-size:26px}
+  .hero .reset-top{font-size:0;min-width:44px}
+  .hero .reset-top:after{content:"↺";font-size:22px}
+  .step-btn small{display:none}
+  .triangle-card:not(.active) .drawing{display:none}
+  .phase-bottom{align-items:stretch;flex-direction:column}
+  .phase-bottom button{align-self:flex-end}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* Compact presentation: the problem leads; controls stay outside the drawing. */
+.wrap{max-width:1180px;padding:18px 24px 14px}
+.topline{margin-bottom:10px}.brand{font-size:11px}.brand svg{width:24px;height:24px}
+.hero{align-items:center;gap:16px}.hero h1{font-size:clamp(22px,2.8vw,30px);letter-spacing:-.5px}
+.header-actions{display:flex;align-items:center;gap:5px;flex-shrink:0}.header-actions button{font-size:13px;min-height:44px;white-space:nowrap}
+#fullscreen svg{width:17px;height:17px;vertical-align:-3px;margin-right:6px}
+.steps{margin:15px 0 14px}.step-btn{padding:8px 12px}.step-btn small{display:none}
+.phase-head{padding:18px 22px;background:#f6f7fd;border-bottom:1px solid #dbe0f0;align-items:flex-start}
+.phase-head h2{font-size:clamp(20px,2.3vw,25px);font-weight:750;line-height:1.45}
+.phase-head .eyebrow{font-size:11px;color:#4852b4;letter-spacing:.06em}
+.phase-head .time{display:none}.problem-data{font-size:clamp(16px,1.9vw,21px);font-weight:700;margin-top:8px;line-height:1.65;color:#28366b}
+.problem-data span{color:#9ba3b9;padding:0 6px}.problem-condition{font-size:15px;margin-top:5px;color:#344158}
+.build-grid{gap:14px;padding:16px 20px 10px}.card-top{padding:10px 14px 2px}.card-tag{font-size:11px}.person-num{display:none}.person{font-size:14px}
+.drawing{max-height:310px}.build-dots{padding:2px 14px 9px}.builder{padding:12px 14px;margin:0 20px 12px;background:#fafbff;border:1px solid #e6e9f2}
+.build-prompt{margin-bottom:8px}.prompt-title{font-size:14px;line-height:1.5}.controls-line{padding-top:6px;border-top:0}
+.choice-row button{min-height:44px}.turn-badge{font-size:11px}.message{margin-top:6px;min-height:0;font-size:13px}.message:empty{display:none}
+.phase-bottom{padding:11px 20px;justify-content:flex-end}.phase-bottom p{display:none}
+.compare-toolbar{padding:12px 20px 3px}.board-wrap{margin:7px 20px 0;background-image:none}
+.board-caption{font-size:10px;margin-top:5px}.compare-foot{padding:6px 20px;justify-content:flex-end}.nudge-pad button{width:38px;min-height:38px;font-size:16px}
+.status-row{padding:8px 20px 14px}.match-status{font-size:13px;padding:8px 12px}
+.response-body{padding:22px 24px}.question{font-weight:750;font-size:clamp(20px,2.4vw,25px)}.question-marker{display:none}.think-note{font-size:13px;margin-bottom:14px}
+.footer{margin-top:10px;font-size:10px}.footer span{max-width:100%}
+h2[tabindex="-1"]:focus,h3[tabindex="-1"]:focus{outline:none}
+:fullscreen,.full-window{background:var(--bg)}
+:fullscreen .wrap,.full-window .wrap{max-width:1450px;padding-top:14px}
+:fullscreen .drawing,.full-window .drawing{max-height:380px}
+@media(max-width:760px){.wrap{padding:13px 14px}.hero{flex-wrap:wrap;gap:10px}.hero h1{font-size:24px}.header-actions{margin-left:auto}.phase-head{padding:16px}.build-grid{padding:12px;gap:10px}.builder{margin:0 12px 12px}.board-wrap{margin:8px 12px 0}.compare-toolbar{padding:12px 12px 3px}.status-row{padding:8px 12px 12px}.compare-foot{padding:5px 12px;align-items:flex-end}.response-body{padding:18px 16px}.problem-data{font-size:17px}.problem-condition{font-size:14px}}
+@media(max-width:450px){.topline{display:none}.hero{gap:8px}.hero h1{font-size:23px}.hero .reset-top{font-size:13px;min-width:auto}.hero .reset-top:after{content:none}.header-actions button{font-size:12px;padding:8px 10px}.steps{margin-top:12px}.step-btn{font-size:12px;gap:6px;padding:8px 5px}.problem-data span{padding:0 2px}.status-row .match-status{flex:1 0 100%}.status-row{justify-content:flex-end}.legend{font-size:12px}.transform-tools{gap:4px}.transform-tools button{padding:8px 10px}.controls-line{gap:8px}.quick-group{gap:8px}.choice-group legend{font-size:11px}.choice-row button{padding:6px 10px;min-width:46px}.phase-bottom{padding:10px 12px}}
+</style>
+</head>
+<body>
+<noscript><p class="noscript">Hãy bật JavaScript trong trình duyệt để dùng thước, compa ảo và chồng hình trực tiếp. Không cần kết nối mạng sau khi mở tệp.</p></noscript>
+<main class="wrap" id="app">
+  <div class="topline">
+    <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="6" r="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 9 6 28M18 9l8 19M10 19h12M16 1v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Phòng khám phá · Toán 7</div>
+    <div class="meta"><span class="badge">2 bạn / 1 thiết bị</span><span class="badge">Khoảng 10 phút</span></div>
+  </div>
+  <header class="hero">
+    <div><h1>Cùng ba cạnh, hai tam giác sẽ thế nào?</h1></div>
+    <div class="header-actions"><button id="fullscreen" data-action="fullscreen" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="fullscreen-label">Toàn màn hình</span></button><button class="quiet reset-top" data-action="restart" aria-label="Làm lại hoạt động từ đầu">↺ Làm lại</button></div>
+  </header>
+  <nav aria-label="Tiến trình hoạt động"><ol class="steps">
+    <li><button id="nav-1" class="step-btn" data-action="nav" data-phase="1" aria-current="step"><span class="step-num">1</span><span>Dựng hai hình<small>4 phút</small></span></button></li>
+    <li><button id="nav-2" class="step-btn" data-action="nav" data-phase="2" disabled><span class="step-num">2</span><span>Xoay, lật, chồng<small>3 phút</small></span></button></li>
+    <li><button id="nav-3" class="step-btn" data-action="nav" data-phase="3" disabled><span class="step-num">3</span><span>Rút nhận xét<small>Trả lời ngắn · 3 phút</small></span></button></li>
+  </ol></nav>
+
+  <section id="phase-1" class="surface" aria-labelledby="heading-1">
+    <div class="phase-head">
+      <div>
+        <div class="eyebrow">Đề bài</div>
+        <h2 id="heading-1" tabindex="-1">Dựng hai tam giác ABC và A′B′C′ có:</h2>
+        <p class="problem-data"><strong>AB = A′B′ = 5 cm <span>·</span> AC = A′C′ = 4 cm <span>·</span> BC = B′C′ = 6 cm.</strong></p><p class="problem-condition"><strong>Bạn 1 bắt đầu từ BC; bạn 2 bắt đầu từ B′A′.</strong></p>
+      </div>
+      <span class="time">01 / 03</span>
+    </div>
+    <div class="build-grid">
+      <div id="card-0" class="triangle-card active"></div>
+      <div id="card-1" class="triangle-card"></div>
+    </div>
+    <div class="builder">
+      <div id="build-prompt" class="build-prompt"></div>
+      <div id="build-controls"></div>
+      <p id="build-message" class="message" role="status" aria-live="polite"></p>
+    </div>
+    <div class="phase-bottom">
+      
+      <button class="primary" id="to-compare" data-action="to-compare" disabled>Thử chồng hai hình →</button>
+    </div>
+  </section>
+
+  <section id="phase-2" class="surface" aria-labelledby="heading-2" hidden>
+    <div class="phase-head">
+      <div>
+        <div class="eyebrow">So sánh hai hình</div>
+        <h2 id="heading-2" tabindex="-1">Hai tam giác vừa dựng có chồng khít lên nhau được không?</h2>
+        
+      </div>
+      <span class="time">02 / 03</span>
+    </div>
+    <div class="compare-toolbar">
+      <div class="legend">
+        <span><i class="swatch"></i>ABC</span>
+        <span><i class="swatch teal"></i>A′B′C′</span>
+      </div>
+      <div class="transform-tools">
+        <button id="rotate" data-action="rotate" title="Hỗ trợ xoay nhanh 90°"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6a8 8 0 1 0 2 9M18 2v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Xoay 90°</button>
+        <button id="flip" data-action="flip" title="Hỗ trợ lật mặt qua trục"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M9 5 2 19h7V5Zm6 0 7 14h-7V5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Lật</button>
+        <button class="quiet small" data-action="reset-pose" id="reset-pose">Đặt lại hình</button>
+      </div>
+    </div>
+    <div id="board-wrap" class="board-wrap">
+      <svg id="board" class="board-svg" viewBox="0 0 1000 450" aria-label="Bàn chồng hình: kéo thân tam giác để di chuyển, nắm đỉnh để xoay trực tiếp, hoặc kéo tay cầm lật qua trục" role="group"></svg>
+    </div>
+    <p class="board-caption">Hình luyện tập — theo dữ kiện HĐ2–HĐ3 SGK</p>
+    <div class="compare-foot">
+      
+      <div class="nudge-pad" role="group" aria-label="Di chuyển tấm hình">
+        <button data-action="nudge" data-dx="-20" data-dy="0" aria-label="Di chuyển sang trái">←</button>
+        <button data-action="nudge" data-dx="0" data-dy="-20" aria-label="Di chuyển lên trên">↑</button>
+        <button data-action="nudge" data-dx="0" data-dy="20" aria-label="Di chuyển xuống dưới">↓</button>
+        <button data-action="nudge" data-dx="20" data-dy="0" aria-label="Di chuyển sang phải">→</button>
+      </div>
+    </div>
+    <div class="status-row">
+      <p id="match-status" class="match-status" role="status" aria-live="polite">Chồng các đỉnh tương ứng A–A′, B–B′, C–C′.</p>
+      <button id="hint-pose" class="small" data-action="hint-pose">Gợi ý</button>
+      <button id="check-angles" class="teal" data-action="check-angles" disabled>Kiểm tra góc</button>
+    </div>
+    <div id="angle-panel" class="angle-panel" hidden>
+      <div class="angle-head"><h3>Ba cặp góc tương ứng</h3><small>Số đo làm tròn đến độ.</small></div>
+      <div id="angle-grid" class="angle-grid"></div>
+    </div>
+    <div class="phase-bottom">
+      
+      <button id="to-response" class="primary" data-action="to-response" disabled>Cùng rút nhận xét →</button>
+    </div>
+  </section>
+
+  <section id="phase-3" class="surface" aria-labelledby="heading-3" hidden>
+    <div class="phase-head">
+      <div><div class="eyebrow">Nghĩ riêng · thống nhất cùng bạn</div><h2 id="heading-3" tabindex="-1">Từ quan sát đến nhận xét</h2></div>
+      <span class="time">03 / 03</span>
+    </div>
+    <div class="response-body">
+      <div class="question-marker"><span>?</span>Một câu trả lời ngắn</div>
+      <form id="answer-form" novalidate>
+        <label class="question" for="answer" style="display:block"><strong>Qua việc dựng và chồng hình, theo em, hai tam giác sẽ bằng nhau khi các cạnh tương ứng thỏa mãn điều kiện gì?</strong></label>
+        <p class="think-note">Mỗi bạn suy nghĩ trước, sau đó hai bạn thống nhất và viết một câu.</p>
+        <div id="answer-entry">
+          <textarea id="answer" rows="3" maxlength="400" placeholder="Theo chúng em, …" aria-describedby="answer-note answer-message"></textarea>
+          <div class="input-meta"><span id="answer-note">Viết ngắn gọn theo cách hiểu của hai bạn.</span><span id="char-count">0 / 400</span></div>
+          <div class="response-actions">
+            <button type="submit" class="primary" id="submit-answer">Gửi nhận xét</button>
+            <button type="button" class="quiet" data-action="hint-answer">Gợi ý</button>
+          </div>
+        </div>
+        <p id="answer-message" class="message" role="status" aria-live="polite"></p>
+      </form>
+      <div id="answer-hint" class="hint-box" hidden>Em hãy nói rõ cần bao nhiêu cặp cạnh và đó là những cặp cạnh nào. Những độ dài nào đã giúp em dựng hai hình?</div>
+      <div id="submitted" class="submitted" hidden>
+        <div class="eyebrow">Nhận xét của hai bạn</div>
+        <p id="own-answer" class="own-answer"></p>
+        <p class="submitted-note">Hãy mở phần chốt và đối chiếu với nhận xét của mình.</p>
+        <button class="quiet small" data-action="edit-answer">Sửa nhận xét</button>
+      </div>
+      <div id="reveal-action" class="reveal-action" hidden><button class="teal" id="reveal" data-action="reveal">Xem chốt kiến thức →</button></div>
+      <section id="knowledge" class="knowledge" aria-labelledby="knowledge-heading" hidden>
+        <div class="eyebrow">Trường hợp bằng nhau thứ nhất</div>
+        <h3 id="knowledge-heading" tabindex="-1">Cạnh - cạnh - cạnh (c.c.c)</h3>
+        <p class="theorem">Nếu ba cạnh của tam giác này bằng ba cạnh của tam giác kia thì hai tam giác đó bằng nhau.</p>
+        <div class="application">
+          <div class="equalities"><span>AB = A′B′ = 5 cm</span><span>AC = A′C′ = 4 cm</span><span>BC = B′C′ = 6 cm</span></div>
+          <p>Vậy <b>ΔABC = ΔA′B′C′ (c.c.c).</b></p>
+        </div>
+        <p class="knowledge-note">Dù hai bạn dựng theo thứ tự cạnh khác nhau, khi ba cặp cạnh tương ứng bằng nhau thì hai tam giác luôn chồng khít lên nhau. SGK thừa nhận định lí trên.</p>
+      </section>
+      <section id="summary" class="summary" hidden>
+        <h3>Hai bạn đã hoàn thành cuộc khám phá!</h3>
+        <ul class="summary-list">
+          <li>Dựng hai tam giác với thứ tự cạnh khác nhau</li>
+          <li>Tự xoay, lật và chồng khít trực tiếp</li>
+          <li>Viết và đối chiếu nhận xét</li>
+        </ul>
+      </section>
+    </div>
+    <div class="phase-bottom">
+      <p>Chia sẻ với lớp: lúc dựng, hai bạn đã cần biết trước số đo các góc chưa?</p>
+      <button class="quiet" data-action="back-to-board">← Xem lại hai hình</button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>Dựa theo HĐ2–HĐ3 · SGK Toán 7 · Kết nối tri thức với cuộc sống</span>
+    
+  </footer>
+  <p id="announcer" class="sr-only" role="status" aria-live="polite"></p>
+</main>
+
+<dialog id="restart-dialog" class="dialog" aria-labelledby="restart-heading">
+  <h2 id="restart-heading">Khám phá lại từ đầu?</h2>
+  <p>Hai hình và nhận xét của lượt này sẽ được làm lại.</p>
+  <div class="dialog-actions">
+    <button data-action="cancel-restart" autofocus>Tiếp tục lượt này</button>
+    <button class="primary" data-action="confirm-restart">Làm lại từ đầu</button>
+  </div>
+</dialog>
+
+<script>
+'use strict';
+(function(){
+const $=function(id){return document.getElementById(id)};
+const H=Math.sqrt(175)/4; // ~3.307189138830738 cm (height of ABC onto BC=6)
+const H2=3*Math.sqrt(7)/2; // ~3.968626966596886 cm (height of A'B'C' onto B'A'=5)
+const MODEL={A:{x:.5,y:-2*H/3},B:{x:-3.25,y:H/3},C:{x:2.75,y:H/3}};
+const KEYS=['A','B','C'];
+// Exact angle in degrees of B'A' constructed horizontally (B' left, A' right, C' top) after horizontal reflection F:
+// In MODEL, A - B = (3.75, -H). With F (x -> -x), A1 - B1 = (-3.75, -H).
+// Rotating by INIT_ANGLE = 180 - acos(3.75/5)*180/PI aligns B'A' horizontally along +x with C' on top!
+const ALPHA_B=Math.acos(3.75/5)*180/Math.PI; // ~41.40962210927086 deg
+const INIT_ANGLE=180-ALPHA_B; // ~138.59037789072914 deg
+const I=[1,0,0,1], R=[0,-1,1,0], F=[-1,0,0,1];
+const SCALE_BUILD=42; // 1 cm = 42 svg units in 460x360 drawing box
+
+// Construction configurations for the 2 learners with DIFFERENT edge orders:
+// Learner 0 (Triangle ABC):
+//   Base drawn first: BC = 6 cm (B left, C right).
+//   Step 0: Center B, radius AB = 5 cm.
+//   Step 1: Center C, radius AC = 4 cm.
+//   Step 2: Pick intersection A.
+//   Step 3: Join AB and AC.
+// Learner 1 (Triangle A'B'C'):
+//   Base drawn first: B'A' = 5 cm (B' left, A' right) -> DIFFERENT edge order!
+//   Step 0: Center A', radius A'C' = 4 cm (or Center B', radius B'C' = 6 cm).
+//   Step 1: Center B', radius B'C' = 6 cm.
+//   Step 2: Pick intersection C'.
+//   Step 3: Join C'A' and C'B'.
+function cardGeom(n){
+  const yBase=236;
+  if(n===0){
+    const b={x:104,y:yBase}, c={x:104+6*SCALE_BUILD,y:yBase};
+    const a={x:104+3.75*SCALE_BUILD,y:yBase-H*SCALE_BUILD};
+    return {
+      orderText:'Thứ tự dựng: Đáy BC = 6 cm → Cung (B; 5 cm) → Cung (C; 4 cm) → Đỉnh A',
+      baseLeftKey:'B', baseRightKey:'C', topKey:'A',
+      baseLen:6, leftEdgeLen:5, rightEdgeLen:4,
+      pts:{B:b, C:c, A:a},
+      steps:[
+        {center:'B', radius:5, arcStart:-64, arcEnd:-22, targetAngle:-ALPHA_B, color:'#5c6ac4'},
+        {center:'C', radius:4, arcStart:-152, arcEnd:-98, targetAngle:-124.23, color:'#0d8a78'}
+      ]
+    };
+  } else {
+    const b={x:125,y:yBase}, a={x:125+5*SCALE_BUILD,y:yBase};
+    const c={x:125+4.5*SCALE_BUILD,y:yBase-H2*SCALE_BUILD};
+    return {
+      orderText:'Thứ tự dựng: Đáy B′A′ = 5 cm → Cung (A′; 4 cm) → Cung (B′; 6 cm) → Đỉnh C′',
+      baseLeftKey:'B', baseRightKey:'A', topKey:'C',
+      baseLen:5, leftEdgeLen:6, rightEdgeLen:4,
+      pts:{B:b, A:a, C:c},
+      steps:[
+        {center:'A', radius:4, arcStart:-122, arcEnd:-68, targetAngle:-97.18, color:'#5c6ac4'},
+        {center:'B', radius:6, arcStart:-62, arcEnd:-22, targetAngle:-41.41, color:'#0d8a78'}
+      ]
+    };
+  }
+}
+
+const dist=function(a,b){return Math.hypot(a.x-b.x,a.y-b.y)};
+const mul=function(a,b){return [a[0]*b[0]+a[1]*b[2],a[0]*b[1]+a[1]*b[3],a[2]*b[0]+a[3]*b[2],a[2]*b[1]+a[3]*b[3]]};
+const transform=function(p,m){return {x:m[0]*p.x+m[1]*p.y,y:m[2]*p.x+m[3]*p.y}};
+function normAngle(a){
+  let r=((a+180)%360+360)%360-180;
+  return Math.abs(r)===-0?0:r;
+}
+function matrixFromPose(angleDeg,flipped,flipScale){
+  const sx=(flipped?-1:1)*(typeof flipScale==='number'?flipScale:1);
+  const rad=angleDeg*Math.PI/180;
+  const c=Math.cos(rad), s=Math.sin(rad);
+  // First scale x by sx (reflection), then rotate by angleDeg:
+  // [c  -s] [sx 0] = [c*sx  -s]
+  // [s   c] [0  1]   [s*sx   c]
+  return [c*sx, -s, s*sx, c];
+}
+
+let state, layout, dragging=null, buildDrag=null;
+
+function fresh(){
+  return {
+    phase:1,
+    build:[0,0],
+    center:null,
+    radius:null,
+    compassAngle:-55,
+    sweepProgress:0,
+    sweptMin:null,
+    sweptMax:null,
+    buildMessage:'',
+    buildTone:'',
+    // Pose in Phase 2 starts in Learner 2's constructed orientation (flipped=true, angle=INIT_ANGLE, m=matrix)
+    pose:{
+      angle:INIT_ANGLE,
+      flipped:true,
+      flipScale:1,
+      m:matrixFromPose(INIT_ANGLE,true,1),
+      x:735,
+      y:230
+    },
+    attempts:0,
+    matched:false,
+    angles:false,
+    answer:'',
+    submitted:false,
+    revealed:false,
+    hint:false
+  };
+}
+
+function syncPoseMatrix(){
+  state.pose.m=matrixFromPose(state.pose.angle,state.pose.flipped,state.pose.flipScale);
+}
+
+function prime(k,n){return k+(n===1?'′':'')}
+function announce(s){$('announcer').textContent=s}
+function withFocus(fn){
+  const id=document.activeElement&&document.activeElement.id;
+  fn();
+  if(id){
+    const node=$(id);
+    if(node&&!node.disabled&&!node.closest('[hidden]'))node.focus({preventScroll:true});
+  }
+}
+function setMessage(s,t){
+  state.buildMessage=s;
+  state.buildTone=t||'';
+  $('build-message').textContent=s;
+  $('build-message').className='message '+(t||'');
+}
+function builderIndex(){return state.build[0]<4?0:state.build[1]<4?1:2}
+
+function arcPath(cx,cy,r,start,end){
+  const s=Math.min(start,end), e=Math.max(start,end);
+  const a=s*Math.PI/180, b=e*Math.PI/180;
+  const large=(e-s)>180?1:0;
+  return 'M'+(cx+r*Math.cos(a)).toFixed(2)+','+(cy+r*Math.sin(a)).toFixed(2)+' A'+r.toFixed(2)+','+r.toFixed(2)+' 0 '+large+' 1 '+(cx+r*Math.cos(b)).toFixed(2)+','+(cy+r*Math.sin(b)).toFixed(2);
+}
+
+// Render realistic school ruler at bottom of active construction card
+function renderRulerSvg(active,currentRadius){
+  const rx=58, ry=296, rw=6*SCALE_BUILD, rh=34;
+  let s='<g class="ruler-group" aria-label="Thước thẳng đo độ dài từ 0 đến 6 cm">';
+  // Ruler body with wood/acrylic tint
+  s+='<rect x="'+(rx-14)+'" y="'+ry+'" width="'+(rw+28)+'" height="'+rh+'" rx="6" fill="#fdf6e4" stroke="#c8a96e" stroke-width="1.6"/>';
+  s+='<rect x="'+(rx-14)+'" y="'+ry+'" width="'+(rw+28)+'" height="7" rx="3" fill="#efe0ba" opacity="0.65"/>';
+  // Millimeter and centimeter ticks
+  for(let mm=0;mm<=60;mm++){
+    const x=rx+mm*(SCALE_BUILD/10);
+    const isCm=mm%10===0, isHalf=mm%5===0&&!isCm;
+    const h=isCm?12:isHalf?8:4.5;
+    s+='<line x1="'+x.toFixed(1)+'" y1="'+ry+'" x2="'+x.toFixed(1)+'" y2="'+(ry+h)+'" stroke="'+(isCm?'#5a4622':'#8c7449')+'" stroke-width="'+(isCm?'1.5':'1')+'"/>';
+    if(isCm){
+      const cm=mm/10;
+      s+='<text x="'+x.toFixed(1)+'" y="'+(ry+25)+'" text-anchor="middle" font-size="12" font-weight="700" fill="#4f3d1d">'+cm+(cm===6?' cm':'')+'</text>';
+    }
+  }
+  if(active){
+    // Interactive measurement bar & draggable aperture handle on ruler
+    const rVal=currentRadius||0;
+    if(rVal>0){
+      const endX=rx+rVal*SCALE_BUILD;
+      s+='<line x1="'+rx+'" y1="'+(ry-5)+'" x2="'+endX+'" y2="'+(ry-5)+'" stroke="#d57927" stroke-width="3.5" stroke-linecap="round"/>';
+      s+='<circle cx="'+rx+'" cy="'+(ry-5)+'" r="4.5" fill="#4852b4"/>';
+    }
+    // Clickable/draggable cm targets on the ruler (3, 4, 5, 6 cm)
+    [3,4,5,6].forEach(function(cm){
+      const tx=rx+cm*SCALE_BUILD;
+      const sel=currentRadius===cm;
+      s+='<g class="ruler-tick" data-ruler-cm="'+cm+'" role="button" tabindex="-1" aria-label="Mở khẩu độ '+cm+' cm trên thước">';
+      s+='<circle cx="'+tx+'" cy="'+(ry+14)+'" r="15" fill="transparent"/>';
+      if(sel){
+        s+='<circle cx="'+tx+'" cy="'+(ry-5)+'" r="7.5" fill="#d57927" stroke="#fff" stroke-width="2"/>';
+        s+='<rect x="'+(tx-24)+'" y="'+(ry-29)+'" width="48" height="18" rx="6" fill="#d57927"/>';
+        s+='<text x="'+tx+'" y="'+(ry-16)+'" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">'+cm+' cm</text>';
+      } else {
+        s+='<circle cx="'+tx+'" cy="'+(ry-5)+'" r="5" fill="#fff" stroke="#b58d4c" stroke-width="1.5"/>';
+      }
+      s+='</g>';
+    });
+  }
+  s+='</g>';
+  return s;
+}
+
+// Render realistic metallic compass with hinge, needle leg, pencil holder, and rotation handle
+function renderRealisticCompass(p,angleDeg,radiusCm){
+  const rr=radiusCm*SCALE_BUILD;
+  const rad=angleDeg*Math.PI/180;
+  const q={x:p.x+rr*Math.cos(rad), y:p.y+rr*Math.sin(rad)};
+  // Compute realistic compass hinge apex in 2D screen space:
+  // Midpoint between needle p and pencil tip q, lifted perpendicular/upward by leg height
+  const mx=(p.x+q.x)/2, my=(p.y+q.y)/2;
+  const legLen=148;
+  const halfSpan=Math.min(rr/2, legLen-18);
+  const lift=Math.sqrt(Math.max(420, legLen*legLen - halfSpan*halfSpan));
+  // Tilt hinge slightly along normal + upward so compass always stands naturally upright
+  const dx=q.x-p.x, dy=q.y-p.y, span=Math.hypot(dx,dy)||1;
+  let nx=-dy/span, ny=dx/span;
+  if(ny>0){nx=-nx;ny=-ny;} // always point hinge toward top of screen
+  const hinge={
+    x:mx + nx*lift*0.28,
+    y:Math.max(30, my - lift*0.82 + ny*lift*0.18)
+  };
+  // Vectors along needle leg and pencil leg
+  const u1x=(p.x-hinge.x), u1y=(p.y-hinge.y), l1=Math.hypot(u1x,u1y)||1;
+  const u2x=(q.x-hinge.x), u2y=(q.y-hinge.y), l2=Math.hypot(u2x,u2y)||1;
+  const n1x=-u1y/l1, n1y=u1x/l1;
+  const n2x=-u2y/l2, n2y=u2x/l2;
+
+  // Needle leg polygon (tapered metallic arm + steel needle tip)
+  const knee1={x:hinge.x+u1x*0.86, y:hinge.y+u1y*0.86};
+  const leg1Poly=[
+    (hinge.x+n1x*5.2).toFixed(1)+','+(hinge.y+n1y*5.2).toFixed(1),
+    (hinge.x-n1x*5.2).toFixed(1)+','+(hinge.y-n1y*5.2).toFixed(1),
+    (knee1.x-n1x*2.4).toFixed(1)+','+(knee1.y-n1y*2.4).toFixed(1),
+    (knee1.x+n1x*2.4).toFixed(1)+','+(knee1.y+n1y*2.4).toFixed(1)
+  ].join(' ');
+
+  // Pencil leg polygon + angled pencil body clamped near the end
+  const knee2={x:hinge.x+u2x*0.76, y:hinge.y+u2y*0.76};
+  const leg2Poly=[
+    (hinge.x+n2x*5.2).toFixed(1)+','+(hinge.y+n2y*5.2).toFixed(1),
+    (hinge.x-n2x*5.2).toFixed(1)+','+(hinge.y-n2y*5.2).toFixed(1),
+    (knee2.x-n2x*2.8).toFixed(1)+','+(knee2.y-n2y*2.8).toFixed(1),
+    (knee2.x+n2x*2.8).toFixed(1)+','+(knee2.y+n2y*2.8).toFixed(1)
+  ].join(' ');
+
+  // Pencil body from pencilTop -> coneStart -> graphite tip q
+  const pTop={x:q.x-u2x/l2*58, y:q.y-u2y/l2*58};
+  const pCone={x:q.x-u2x/l2*15, y:q.y-u2y/l2*15};
+  const pLead={x:q.x-u2x/l2*5, y:q.y-u2y/l2*5};
+  const pw=4.2;
+  const pencilBody=[
+    (pTop.x+n2x*pw).toFixed(1)+','+(pTop.y+n2y*pw).toFixed(1),
+    (pTop.x-n2x*pw).toFixed(1)+','+(pTop.y-n2y*pw).toFixed(1),
+    (pCone.x-n2x*pw).toFixed(1)+','+(pCone.y-n2y*pw).toFixed(1),
+    (pCone.x+n2x*pw).toFixed(1)+','+(pCone.y+n2y*pw).toFixed(1)
+  ].join(' ');
+  const woodCone=[
+    (pCone.x+n2x*pw).toFixed(1)+','+(pCone.y+n2y*pw).toFixed(1),
+    (pCone.x-n2x*pw).toFixed(1)+','+(pCone.y-n2y*pw).toFixed(1),
+    (pLead.x-n2x*1.3).toFixed(1)+','+(pLead.y-n2y*1.3).toFixed(1),
+    (pLead.x+n2x*1.3).toFixed(1)+','+(pLead.y+n2y*1.3).toFixed(1)
+  ].join(' ');
+  const leadTip=[
+    (pLead.x+n2x*1.4).toFixed(1)+','+(pLead.y+n2y*1.4).toFixed(1),
+    (pLead.x-n2x*1.4).toFixed(1)+','+(pLead.y-n2y*1.4).toFixed(1),
+    q.x.toFixed(1)+','+q.y.toFixed(1)
+  ].join(' ');
+
+  // Adjusting bow bar between the two legs
+  const bow1={x:hinge.x+u1x*0.42, y:hinge.y+u1y*0.42};
+  const bow2={x:hinge.x+u2x*0.42, y:hinge.y+u2y*0.42};
+  const bowMid={x:(bow1.x+bow2.x)/2, y:(bow1.y+bow2.y)/2+4};
+
+  // Tangential arrow cue around pencil tip q
+  const tanAngle=(angleDeg+90)*Math.PI/180;
+  const tx=Math.cos(tanAngle), ty=Math.sin(tanAngle);
+
+  let s='<g class="compass-visual">';
+  // Dashed radius measurement line on paper
+  s+='<line x1="'+p.x.toFixed(1)+'" y1="'+p.y.toFixed(1)+'" x2="'+q.x.toFixed(1)+'" y2="'+q.y.toFixed(1)+'" stroke="#d57927" stroke-width="1.6" stroke-dasharray="4 4"/>';
+  // Adjustment arc bar between legs
+  s+='<path d="M'+bow1.x.toFixed(1)+' '+bow1.y.toFixed(1)+' Q'+bowMid.x.toFixed(1)+' '+bowMid.y.toFixed(1)+' '+bow2.x.toFixed(1)+' '+bow2.y.toFixed(1)+'" fill="none" stroke="#8a95a7" stroke-width="2.2"/>';
+  // Steel needle tip
+  s+='<line x1="'+knee1.x.toFixed(1)+'" y1="'+knee1.y.toFixed(1)+'" x2="'+p.x.toFixed(1)+'" y2="'+p.y.toFixed(1)+'" stroke="#243044" stroke-width="2.4" stroke-linecap="round"/>';
+  // Needle leg body
+  s+='<polygon points="'+leg1Poly+'" fill="#6e7b91" stroke="#394559" stroke-width="1.2" stroke-linejoin="round"/>';
+  // Pencil leg body
+  s+='<polygon points="'+leg2Poly+'" fill="#7d8b9f" stroke="#394559" stroke-width="1.2" stroke-linejoin="round"/>';
+  // Pencil wood, body & lead
+  s+='<polygon points="'+pencilBody+'" fill="#d96b27" stroke="#8f3f10" stroke-width="1.1"/>';
+  s+='<polygon points="'+woodCone+'" fill="#f3d2a2" stroke="#b38850" stroke-width="1"/>';
+  s+='<polygon points="'+leadTip+'" fill="#1e2633"/>';
+  // Brass clamp at knee2
+  s+='<circle cx="'+knee2.x.toFixed(1)+'" cy="'+knee2.y.toFixed(1)+'" r="5.2" fill="#d89b40" stroke="#7d5214" stroke-width="1.2"/>';
+  // Top knurled handle + hinge head
+  s+='<rect x="'+(hinge.x-4).toFixed(1)+'" y="'+(hinge.y-22).toFixed(1)+'" width="8" height="15" rx="3" fill="#49566b" stroke="#283344" stroke-width="1.2"/>';
+  s+='<circle cx="'+hinge.x.toFixed(1)+'" cy="'+hinge.y.toFixed(1)+'" r="8.5" fill="#49566b" stroke="#253042" stroke-width="1.5"/>';
+  s+='<circle cx="'+hinge.x.toFixed(1)+'" cy="'+hinge.y.toFixed(1)+'" r="3.4" fill="#e5a94c"/>';
+  // Aperture label badge on the radius line
+  s+='<rect x="'+(mx-24).toFixed(1)+'" y="'+(my-11).toFixed(1)+'" width="48" height="20" rx="6" fill="#fff" stroke="#d57927" stroke-width="1.4"/>';
+  s+='<text x="'+mx.toFixed(1)+'" y="'+(my+3).toFixed(1)+'" text-anchor="middle" font-size="12" font-weight="700" fill="#b35412">'+radiusCm+' cm</text>';
+
+  // Interactive draggable pencil handle for sweeping the arc directly on the figure
+  s+='<g class="compass-drag" data-compass-handle="pencil" role="button" tabindex="-1" aria-label="Nắm đầu chì xoay để vẽ cung tròn">';
+  s+='<circle cx="'+q.x.toFixed(1)+'" cy="'+q.y.toFixed(1)+'" r="22" fill="#d5792718" stroke="#d57927" stroke-width="1.8" stroke-dasharray="4 3"/>';
+  s+='<circle cx="'+q.x.toFixed(1)+'" cy="'+q.y.toFixed(1)+'" r="6.5" fill="#d57927" stroke="#fff" stroke-width="2"/>';
+  // Small curved rotation arrows near pencil tip
+  s+='<path d="M'+(q.x+tx*15).toFixed(1)+' '+(q.y+ty*15).toFixed(1)+' L'+(q.x+tx*21).toFixed(1)+' '+(q.y+ty*21).toFixed(1)+'" stroke="#b35412" stroke-width="2" stroke-linecap="round"/>';
+  s+='</g>';
+  s+='</g>';
+  return s;
+}
+
+function constructionSvg(n){
+  const step=state.build[n], active=builderIndex()===n;
+  const g=cardGeom(n);
+  const pLeft=g.pts[g.baseLeftKey], pRight=g.pts[g.baseRightKey], pTop=g.pts[g.topKey];
+  const colorMain=n===1?'#087568':'#4852b4';
+  const fillMain=n===1?'#08756814':'#4852b414';
+
+  let s='<svg id="drawing-'+n+'" class="drawing'+(buildDrag&&buildDrag.card===n?' compass-dragging':'')+'" viewBox="0 0 460 360" role="img" aria-label="Tam giác '+(n?'A phẩy B phẩy C phẩy':'ABC')+', đã hoàn thành '+step+' trong 4 bước dựng">';
+
+  // Subtle grid background on paper
+  s+='<rect x="14" y="10" width="432" height="266" rx="12" fill="#fafbfd" stroke="#eef1f6" stroke-width="1"/>';
+
+  // Completed arcs from earlier steps
+  for(let k=0;k<Math.min(step,2);k++){
+    const st=g.steps[k];
+    const cPt=g.pts[st.center];
+    s+='<path class="arc" stroke="'+st.color+'" d="'+arcPath(cPt.x,cPt.y,st.radius*SCALE_BUILD,st.arcStart,st.arcEnd)+'"/>';
+  }
+
+  // Base segment already drawn
+  s+='<path d="M'+pLeft.x+' '+pLeft.y+'H'+pRight.x+'" fill="none" stroke="#5a687d" stroke-width="2.8" stroke-linecap="round"/>';
+  s+='<text class="edge-label" x="'+((pLeft.x+pRight.x)/2)+'" y="'+(pLeft.y+23)+'" text-anchor="middle">'+g.baseLen+' cm</text>';
+
+  // Step 3: Dashed guide lines to click/drag to join edges directly on the figure
+  if(active && step===3){
+    s+='<g class="join-guides" data-direct-join="true" style="cursor:pointer">';
+    s+='<path d="M'+pLeft.x+' '+pLeft.y+'L'+pTop.x.toFixed(1)+' '+pTop.y.toFixed(1)+'L'+pRight.x+' '+pRight.y+'" fill="none" stroke="#d57927" stroke-width="3" stroke-dasharray="7 6"/>';
+    s+='</g>';
+  }
+
+  // Step 4: Completed triangle polygon + side length labels
+  if(step>=4){
+    s+='<path d="M'+pLeft.x+' '+pLeft.y+'L'+pTop.x.toFixed(1)+' '+pTop.y.toFixed(1)+'L'+pRight.x+' '+pRight.y+'Z" fill="'+fillMain+'" stroke="'+colorMain+'" stroke-width="2.8" stroke-linejoin="round"/>';
+    const lx=(pLeft.x+pTop.x)/2-18, ly=(pLeft.y+pTop.y)/2-4;
+    const rx=(pRight.x+pTop.x)/2+20, ry=(pRight.y+pTop.y)/2-4;
+    s+='<text class="edge-label" x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="middle">'+g.leftEdgeLen+' cm</text>';
+    s+='<text class="edge-label" x="'+rx.toFixed(1)+'" y="'+ry.toFixed(1)+'" text-anchor="middle">'+g.rightEdgeLen+' cm</text>';
+  }
+
+  // Live swept trail while student rotates the compass directly on the canvas
+  if(active && step<2 && state.center && state.radius && state.sweptMin!==null && state.sweptMax!==null && (state.sweptMax-state.sweptMin)>2){
+    const cPt=g.pts[state.center];
+    s+='<path class="arc-live" stroke="#d57927" d="'+arcPath(cPt.x,cPt.y,state.radius*SCALE_BUILD,state.sweptMin,state.sweptMax)+'"/>';
+  }
+  // Guide ghost arc showing target sweep zone when right center & radius are selected
+  if(active && step<2 && state.center===g.steps[step].center && state.radius===g.steps[step].radius){
+    const st=g.steps[step], cPt=g.pts[st.center];
+    s+='<path fill="none" stroke="#d57927" stroke-opacity="0.28" stroke-width="7" stroke-linecap="round" d="'+arcPath(cPt.x,cPt.y,st.radius*SCALE_BUILD,st.arcStart,st.arcEnd)+'"/>';
+  }
+
+  // Base vertices (interactive on canvas during steps 0 and 1 so student can click/drag needle to vertex)
+  [g.baseLeftKey, g.baseRightKey].forEach(function(k){
+    const p=g.pts[k];
+    const selected=active && state.center===k && step<2;
+    const isExpected=active && step<2 && g.steps[step].center===k && !state.center;
+    s+='<g class="vertex-hit" data-vertex="'+k+'" role="button" tabindex="-1" aria-label="Đỉnh '+prime(k,n)+'">';
+    s+='<circle cx="'+p.x+'" cy="'+p.y+'" r="22" fill="transparent"/>';
+    if(selected || isExpected){
+      s+='<circle class="ring" cx="'+p.x+'" cy="'+p.y+'" r="13" fill="'+(selected?'#d5792722':'#4852b415')+'" stroke="'+(selected?'#d57927':'#4852b4')+'" stroke-width="2" stroke-dasharray="'+(selected?'none':'3 3')+'"/>';
+    }
+    s+='<circle cx="'+p.x+'" cy="'+p.y+'" r="'+(selected?7:5.5)+'" fill="'+(selected?'#d57927':'#475569')+'"/>';
+    s+='<text class="point-label" x="'+p.x+'" y="'+(p.y+25)+'" text-anchor="middle" fill="#2c3a4f">'+prime(k,n)+'</text>';
+    s+='</g>';
+  });
+
+  // Top intersection point (Step 2: interactive direct click on intersection!)
+  if(step>=2){
+    const isPickStep=active && step===2;
+    s+='<g class="vertex-hit" data-pick-top="true" style="cursor:'+(isPickStep?'pointer':'default')+'">';
+    s+='<circle cx="'+pTop.x.toFixed(1)+'" cy="'+pTop.y.toFixed(1)+'" r="24" fill="transparent"/>';
+    if(isPickStep){
+      s+='<circle cx="'+pTop.x.toFixed(1)+'" cy="'+pTop.y.toFixed(1)+'" r="15" fill="#d5792724" stroke="#d57927" stroke-width="2.2" stroke-dasharray="4 3"/>';
+    }
+    s+='<circle cx="'+pTop.x.toFixed(1)+'" cy="'+pTop.y.toFixed(1)+'" r="'+(step===2?7.5:5.5)+'" fill="'+(step===2?'#d57927':colorMain)+'"/>';
+    if(step>=3){
+      s+='<text class="point-label" x="'+(pTop.x+4).toFixed(1)+'" y="'+(pTop.y-14).toFixed(1)+'" text-anchor="middle" fill="'+colorMain+'">'+prime(g.topKey,n)+'</text>';
+    }
+    s+='</g>';
+  }
+
+  // Render realistic compass when active and in step 0 or 1
+  if(active && step<2){
+    const cPt=state.center ? g.pts[state.center] : {x:150,y:210};
+    const rCm=state.radius || 4;
+    if(state.center){
+      s+=renderRealisticCompass(cPt, state.compassAngle, rCm);
+    } else {
+      // Prompt badge on canvas to pick a vertex for the compass needle
+    }
+  }
+
+  // Built-in interactive ruler at the bottom of the SVG canvas
+  s+=renderRulerSvg(active && step<2, state.radius);
+  return s+'</svg>';
+}
+
+function defaultAngleFor(n,centerKey){
+  const g=cardGeom(n);
+  if(centerKey===g.baseLeftKey)return -58;
+  return -122;
+}
+
+function selectCenter(n,k){
+  state.center=k;
+  state.sweptMin=null;state.sweptMax=null;state.sweepProgress=0;
+  state.compassAngle=defaultAngleFor(n,k);
+  const g=cardGeom(n), st=g.steps[state.build[n]];
+  if(k!==st.center){
+    setMessage('Đỉnh '+prime(k,n)+' chưa đúng với bước này. Hãy cắm kim vào đỉnh '+prime(st.center,n)+' nhé.','error');
+  } else if(!state.radius){
+    setMessage('Tâm: '+prime(k,n)+'.', 'good');
+  } else if(state.radius===st.radius){
+    setMessage('Compa đã sẵn sàng.', 'good');
+  } else {
+    setMessage('Đã cắm kim tại '+prime(k,n)+'. Hãy chỉnh khẩu độ trên thước thành '+st.radius+' cm.', '');
+  }
+}
+
+function selectRadius(n,r){
+  state.radius=r;
+  state.sweptMin=null;state.sweptMax=null;state.sweepProgress=0;
+  const g=cardGeom(n), st=g.steps[state.build[n]];
+  if(!state.center){
+    setMessage('Khẩu độ: '+r+' cm.', '');
+  } else if(state.center===st.center && r===st.radius){
+    setMessage('Khẩu độ: '+r+' cm.', 'good');
+  } else if(r!==st.radius){
+    setMessage('Ở bước này cần vẽ cạnh dài '+st.radius+' cm. Hãy mở khẩu độ '+st.radius+' cm trên thước nhé.', 'error');
+  }
+}
+
+function renderBuild(){
+  const n=builderIndex();
+  $('to-compare').disabled=n!==2;
+  for(let j=0;j<2;j++){
+    const step=state.build[j], card=$('card-'+j), g=cardGeom(j);
+    card.className='triangle-card'+(n===j?' active':'')+(step===4?' complete':'');
+    card.innerHTML=
+      '<div class="card-top">'+
+        '<div class="person"><span class="person-num">'+(j+1)+'</span>Bạn '+(j+1)+' · '+(j?'ΔA′B′C′':'ΔABC')+'</div>'+
+        '<span class="card-tag">'+(step===4?'Đã dựng xong':n===j?'Đến lượt bạn':'Chờ đổi vai')+'</span>'+
+      '</div>'+
+      constructionSvg(j)+
+      '<div class="build-dots" aria-label="Đã dựng '+step+' trên 4 bước">'+
+        [0,1,2,3].map(function(k){return '<span class="build-dot'+(k<step?' filled':'')+'"></span>'}).join('')+
+        '<span class="build-number">'+step+'/4</span>'+
+      '</div>';
+  }
+  if(n===2){
+    $('build-prompt').innerHTML=
+      '<div class="prompt-left"><span class="turn-badge" style="background:var(--teal)">Đã dựng xong 2 hình</span>'+
+      '<div><p class="prompt-title">Hai hình đã sẵn sàng để so sánh.</p></div></div>';
+    $('build-controls').innerHTML='';
+    $('to-compare').disabled=false;
+  } else {
+    const step=state.build[n], g=cardGeom(n);
+    let title, note;
+    if(step<2){
+      const st=g.steps[step];
+      title='Bước '+(step+1)+'/4: Vẽ cung tròn tâm '+prime(st.center,n)+', bán kính '+st.radius+' cm.';
+      note='';
+    } else if(step===2){
+      title='Xác định đỉnh '+prime(g.topKey,n)+' tại giao điểm hai cung.';
+      note='';
+    } else {
+      title='Bước 4/4: Nối '+prime(g.topKey,n)+prime(g.baseLeftKey,n)+' và '+prime(g.topKey,n)+prime(g.baseRightKey,n)+' để hoàn thành tam giác.';
+      note='';
+    }
+    const curCenter=state.center?prime(state.center,n):'Chưa chọn';
+    const curRadius=state.radius?(state.radius+' cm'):'Chưa mở';
+    $('build-prompt').innerHTML=
+      '<div class="prompt-left"><span class="turn-badge">Bạn '+(n+1)+'</span><p class="prompt-title">'+title+'</p></div>';
+
+    if(step<2){
+      const vertices=[g.baseLeftKey, g.baseRightKey];
+      const radii=n===0?[4,5]:[4,6];
+      $('build-controls').innerHTML=
+        '<div class="controls-line">'+
+          '<div class="quick-group">'+
+            '<fieldset class="choice-group"><legend>Đỉnh cắm kim:</legend><div class="choice-row">'+
+              vertices.map(function(k){return '<button id="center-'+k+'" data-action="center" data-value="'+k+'" aria-pressed="'+(state.center===k)+'">'+prime(k,n)+'</button>'}).join('')+
+            '</div></fieldset>'+
+            '<fieldset class="choice-group"><legend>Khẩu độ thước:</legend><div class="choice-row">'+
+              radii.map(function(r){return '<button id="radius-'+r+'" data-action="radius" data-value="'+r+'" aria-pressed="'+(state.radius===r)+'">'+r+' cm</button>'}).join('')+
+            '</div></fieldset>'+
+          '</div>'+
+          '<button id="build-next" class="primary small" data-action="draw-arc">Xoay vẽ cung tròn</button>'+
+        '</div>';
+    } else {
+      $('build-controls').innerHTML=
+        '<div class="controls-line"><span></span><button id="build-next" class="primary" data-action="'+(step===2?'select-A':'join')+'">'+(step===2?'Chọn giao điểm '+prime(g.topKey,n):'Nối các cạnh')+'</button></div>';
+    }
+  }
+  setMessage(state.buildMessage,state.buildTone);
+  updateNav();
+}
+
+function advanceBuild(){
+  const n=builderIndex();if(n>1)return;
+  state.build[n]++;
+  state.center=null;state.radius=null;state.sweptMin=null;state.sweptMax=null;state.sweepProgress=0;
+  state.buildMessage=state.build[n]===4
+    ? (n===0?'Bạn 1 đã dựng xong ΔABC. Đổi vai: mời Bạn 2 dựng ΔA′B′C′ với đáy B′A′ = 5 cm!':'Hai tam giác với hai thứ tự dựng khác nhau đã hoàn thành! Hãy bấm Thử chồng hai hình.')
+    : '';
+  state.buildTone='good';
+  renderBuild();
+  announce(state.buildMessage);
+  const focus=$('build-next')||$('center-B')||$('center-A')||$('to-compare');
+  if(focus)focus.focus({preventScroll:true});
+}
+
+function updateNav(){
+  for(let i=1;i<=3;i++){
+    const b=$('nav-'+i),enabled=i===1||(i===2&&state.build[1]===4)||(i===3&&state.angles);
+    b.disabled=!enabled;
+    if(state.phase===i)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');
+    const done=i===1?state.build[1]===4:i===2?state.angles:state.revealed;
+    b.classList.toggle('done',done);
+  }
+}
+
+function phase(n){
+  if(n===2&&state.build[1]!==4||n===3&&!state.angles)return;
+  state.phase=n;
+  for(let i=1;i<=3;i++)$('phase-'+i).hidden=i!==n;
+  updateNav();
+  if(n===2){setLayout();renderBoard()}
+  $('heading-'+n).focus({preventScroll:true});
+  $('phase-'+n).scrollIntoView({block:'start',behavior:'auto'});
+}
+
+function setLayout(){
+  const narrow=$('board-wrap').getBoundingClientRect().width<650;
+  const next=narrow
+    ? {mode:'narrow',w:620,h:650,s:38,target:{x:205,y:190},start:{x:410,y:435}}
+    : {mode:'wide',w:1000,h:450,s:50,target:{x:285,y:240},start:{x:735,y:235}};
+  if(!layout){state.pose.x=next.start.x;state.pose.y=next.start.y}
+  else if(layout.mode!==next.mode){
+    if(state.matched){state.pose.x=next.target.x;state.pose.y=next.target.y}
+    else{state.pose.x=state.pose.x/layout.w*next.w;state.pose.y=state.pose.y/layout.h*next.h}
+  }
+  layout=next;$('board').setAttribute('viewBox','0 0 '+layout.w+' '+layout.h);
+  clampPose();
+}
+
+function vertices(m,x,y){
+  return KEYS.map(function(k){
+    const p=transform(MODEL[k],m);
+    return {k:k,x:x+p.x*layout.s,y:y+p.y*layout.s};
+  });
+}
+
+function clampPose(){
+  if(!layout)return;
+  syncPoseMatrix();
+  const ps=KEYS.map(function(k){const p=transform(MODEL[k],state.pose.m);return {x:p.x*layout.s,y:p.y*layout.s}});
+  state.pose.x=Math.max(36-Math.min.apply(null,ps.map(function(p){return p.x})),Math.min(layout.w-36-Math.max.apply(null,ps.map(function(p){return p.x})),state.pose.x));
+  state.pose.y=Math.max(36-Math.min.apply(null,ps.map(function(p){return p.y})),Math.min(layout.h-36-Math.max.apply(null,ps.map(function(p){return p.y})),state.pose.y));
+}
+
+function polygon(ps){return ps.map(function(p){return p.x.toFixed(2)+','+p.y.toFixed(2)}).join(' ')}
+
+function pointLabels(ps,cx,cy,color,primed,combined){
+  return ps.map(function(p){
+    const d=Math.hypot(p.x-cx,p.y-cy)||1,x=p.x+(p.x-cx)/d*25,y=p.y+(p.y-cy)/d*25+7;
+    let s='<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="4.5" fill="'+color+'"/>';
+    s+='<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" text-anchor="middle" font-size="21" font-weight="700" fill="'+color+'" style="paint-order:stroke;stroke:white;stroke-width:5px;stroke-linejoin:round">'+p.k+(combined?', '+p.k+'′':primed?'′':'')+'</text>';
+    return s;
+  }).join('');
+}
+
+function edgeLabels(ps,cx,cy){
+  return [[0,1,5],[0,2,4],[1,2,6]].map(function(pair){
+    const a=ps[pair[0]],b=ps[pair[1]],mx=(a.x+b.x)/2,my=(a.y+b.y)/2,d=Math.hypot(mx-cx,my-cy)||1;
+    return '<text x="'+(mx+(mx-cx)/d*18).toFixed(1)+'" y="'+(my+(my-cy)/d*18+6).toFixed(1)+'" text-anchor="middle" font-size="17" font-weight="600" fill="#526071" style="paint-order:stroke;stroke:#fcfdfc;stroke-width:6px;stroke-linejoin:round">'+pair[2]+' cm</text>';
+  }).join('');
+}
+
+function renderBoard(){
+  if(!layout)return;
+  syncPoseMatrix();
+  const t=vertices(I,layout.target.x,layout.target.y), m=vertices(state.pose.m,state.pose.x,state.pose.y);
+  const focused=document.activeElement&&document.activeElement.id==='moving-triangle';
+  let out='<g aria-hidden="true"><polygon points="'+polygon(t)+'" class="target-line"/>'+pointLabels(t,layout.target.x,layout.target.y,'#4852b4',false,state.matched)+edgeLabels(t,layout.target.x,layout.target.y)+'</g>';
+
+  // Visual rotation guide circle while dragging a vertex to rotate
+  if(dragging && dragging.mode==='rotate'){
+    const rGuide=Math.hypot(m[0].x-state.pose.x,m[0].y-state.pose.y);
+    out+='<circle cx="'+state.pose.x.toFixed(1)+'" cy="'+state.pose.y.toFixed(1)+'" r="'+rGuide.toFixed(1)+'" fill="none" stroke="#d57927" stroke-width="1.6" stroke-dasharray="5 5"/>';
+  }
+
+  out+='<g id="moving-triangle" class="movable'+(dragging?' dragging':'')+'" role="img" tabindex="'+(state.matched?'-1':'0')+'" aria-label="Tam giác A phẩy B phẩy C phẩy: kéo thân hình để di chuyển, nắm các đỉnh để xoay, kéo nút lật qua trục để lật">';
+  out+='<polygon points="'+polygon(m)+'" class="face'+(state.matched?' matched-line':'')+'"/>';
+
+  if(!state.matched){
+    out+=pointLabels(m,state.pose.x,state.pose.y,'#087568',true,false)+edgeLabels(m,state.pose.x,state.pose.y);
+
+    // Direct Vertex Rotation Handles on A', B', C'
+    m.forEach(function(p){
+      out+='<g class="vertex-rotate-handle" data-handle="vertex-rotate" data-vertex="'+p.k+'" role="button" tabindex="-1" aria-label="Nắm đỉnh '+p.k+' phẩy để xoay trực tiếp">';
+      out+='<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="20" fill="transparent"/>';
+      out+='<circle class="v-ring" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="7.5" fill="#ffffffcc" stroke="#087568" stroke-width="1.6"/>';
+      out+='<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="4.5" fill="#087568"/>';
+      out+='</g>';
+    });
+  }
+  out+='</g>';
+  $('board').innerHTML=out;
+
+  if(focused&&!state.matched)$('moving-triangle').focus({preventScroll:true});
+  $('rotate').disabled=state.matched;$('flip').disabled=state.matched;
+  document.querySelectorAll('[data-action="nudge"]').forEach(function(b){b.disabled=state.matched});
+  $('check-angles').disabled=!state.matched;
+  $('match-status').className='match-status'+(state.matched?' success':'');
+  if(state.matched)$('match-status').textContent='Ba cặp đỉnh đã trùng khít.';
+}
+
+function tryMatch(){
+  if(state.pose.flipped)return false;
+  const angDiff=Math.abs(normAngle(state.pose.angle));
+  if(angDiff>12)return false;
+  // Temporarily check vertex distance if snapped to angle 0
+  const mZero=matrixFromPose(0,false,1);
+  const t=vertices(I,layout.target.x,layout.target.y), m=vertices(mZero,state.pose.x,state.pose.y);
+  if(t.every(function(p,i){return dist(p,m[i])<=layout.s*.48})){
+    state.pose.angle=0;state.pose.flipped=false;state.pose.flipScale=1;
+    state.pose.x=layout.target.x;state.pose.y=layout.target.y;
+    syncPoseMatrix();
+    state.matched=true;
+    dragging=null;
+    announce('Đã chồng khít ba cặp đỉnh tương ứng. Bây giờ có thể kiểm tra góc.');
+    return true;
+  }
+  return false;
+}
+
+function updatePoseFeedback(){
+  if(state.matched)return;
+  const dCenter=Math.hypot(state.pose.x-layout.target.x, state.pose.y-layout.target.y);
+  if(dCenter<layout.s*1.2){
+    if(state.pose.flipped){
+      $('match-status').textContent='Tâm hai hình đã gần nhau nhưng tam giác A′B′C′ đang bị ngược mặt. Hãy kéo nút ⇄ Lật trên hình (hoặc bấm Lật) rồi xoay đỉnh nhé!';
+    } else if(Math.abs(normAngle(state.pose.angle))>12){
+      $('match-status').textContent='Đã đúng mặt lật! Hãy nắm một đỉnh A′, B′ hoặc C′ trên hình và xoay cho các đỉnh tương ứng trùng nhau.';
+    }
+  }
+}
+
+function move(dx,dy){
+  if(state.matched)return;
+  state.pose.x+=dx;state.pose.y+=dy;state.attempts++;
+  clampPose();
+  if(!tryMatch())updatePoseFeedback();
+  renderBoard();
+}
+
+function rotateStep90(){
+  if(state.matched)return;
+  // If currently at constructed angle INIT_ANGLE (~138.6 deg) or non-multiple of 90, snap to 90 deg so 1 click reaches 0 deg
+  const rem=Math.abs(state.pose.angle%90);
+  if(Math.abs(normAngle(state.pose.angle-INIT_ANGLE))<1){
+    state.pose.angle=state.pose.flipped ? -90 : 0;
+  } else if(rem>1 && rem<89){
+    state.pose.angle=Math.round(state.pose.angle/90)*90;
+  } else {
+    // Multiply current matrix by R = [0,-1,1,0] (+90 deg screen rotation)
+    state.pose.angle=normAngle(state.pose.angle+90);
+  }
+  state.attempts++;
+  clampPose();
+  if(!tryMatch())updatePoseFeedback();
+  renderBoard();
+  if(!state.matched)announce('Đã xoay tấm hình. Bạn cũng có thể nắm trực tiếp đỉnh A′, B′, C′ để xoay.');
+}
+
+function flipPose(){
+  if(state.matched)return;
+  // Reflect across vertical axis through centroid: F * R(theta) = R(-theta) * F
+  if(Math.abs(normAngle(state.pose.angle-INIT_ANGLE))<1 && state.pose.flipped){
+    state.pose.flipped=false;
+    state.pose.angle=-90;
+  } else {
+    state.pose.flipped=!state.pose.flipped;
+    state.pose.angle=normAngle(-state.pose.angle);
+  }
+  state.pose.flipScale=1;
+  state.attempts++;
+  clampPose();
+  if(!tryMatch())updatePoseFeedback();
+  renderBoard();
+  if(!state.matched)announce('Đã lật tấm hình qua trục, các độ dài cạnh được giữ nguyên.');
+}
+
+function angle(p,q,r){
+  const u={x:p.x-q.x,y:p.y-q.y},v={x:r.x-q.x,y:r.y-q.y};
+  return Math.acos(Math.max(-1,Math.min(1,(u.x*v.x+u.y*v.y)/(Math.hypot(u.x,u.y)*Math.hypot(v.x,v.y)))))*180/Math.PI;
+}
+function hat(name,primeName){
+  const w=primeName?78:58;
+  return '<svg class="hat'+(primeName?' prime':'')+'" viewBox="0 0 '+w+' 38" role="img" aria-label="góc '+name+'"><path d="M5 10 L'+(w/2)+' 3 L'+(w-5)+' 10"/><text x="'+(w/2)+'" y="32" text-anchor="middle">'+name+'</text></svg>';
+}
+function showAngles(){
+  if(!state.matched)return;
+  state.angles=true;
+  const values=[angle(MODEL.B,MODEL.A,MODEL.C),angle(MODEL.A,MODEL.B,MODEL.C),angle(MODEL.A,MODEL.C,MODEL.B)];
+  $('angle-grid').innerHTML=['BAC','ABC','ACB'].map(function(name,i){
+    const pn=name.split('').map(function(k){return k+'′'}).join('');
+    return '<div class="angle-card"><div class="angle-equation">'+hat(name,false)+'<span>=</span>'+hat(pn,true)+'<span>≈ '+Math.round(values[i])+'°</span></div></div>';
+  }).join('');
+  $('angle-panel').hidden=false;$('to-response').disabled=false;updateNav();
+  announce('Ba cặp góc tương ứng có cùng số đo. Hãy cùng rút nhận xét.');
+}
+
+function resetPose(){
+  state.pose={
+    angle:INIT_ANGLE,
+    flipped:true,
+    flipScale:1,
+    m:matrixFromPose(INIT_ANGLE,true,1),
+    x:layout.start.x,
+    y:layout.start.y
+  };
+  state.attempts=0;state.matched=false;state.angles=false;dragging=null;
+  $('angle-panel').hidden=true;$('to-response').disabled=true;
+  $('match-status').textContent='Chồng các đỉnh tương ứng A–A′, B–B′, C–C′.';
+  renderBoard();updateNav();
+}
+
+function updateFullscreen(){
+  const active=!!document.fullscreenElement||!!document.webkitFullscreenElement||document.documentElement.classList.contains('full-window');
+  $('fullscreen').setAttribute('aria-pressed',String(active));
+  $('fullscreen-label').textContent=active?'Thoát toàn màn hình':'Toàn màn hình';
+}
+async function toggleFullscreen(){
+  const root=document.documentElement;
+  if(document.fullscreenElement){await document.exitFullscreen();return}
+  if(document.webkitFullscreenElement&&document.webkitExitFullscreen){document.webkitExitFullscreen();return}
+  if(root.classList.contains('full-window')){root.classList.remove('full-window');updateFullscreen();return}
+  try{
+    if(root.requestFullscreen)await root.requestFullscreen();
+    else if(root.webkitRequestFullscreen)root.webkitRequestFullscreen();
+    else{root.classList.add('full-window');announce('Đã mở rộng hoạt động trong cửa sổ trình duyệt.');}
+  }catch(e){root.classList.add('full-window');announce('Đã mở rộng hoạt động trong khung hiện tại.');}
+  updateFullscreen();
+}
+document.addEventListener('fullscreenchange',updateFullscreen);
+document.addEventListener('webkitfullscreenchange',updateFullscreen);
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.documentElement.classList.remove('full-window');updateFullscreen();}});
+
+function clean(s){return s.replace(/[\u200B-\u200D\u2060\uFEFF]/g,'').trim()}
+function renderResponse(){
+  $('answer-entry').hidden=state.submitted;
+  $('submitted').hidden=!state.submitted;
+  $('own-answer').textContent=state.answer;
+  $('reveal-action').hidden=!state.submitted||state.revealed;
+  $('knowledge').hidden=!state.revealed;$('summary').hidden=!state.revealed;
+  $('answer-hint').hidden=!state.hint||state.revealed;
+  updateNav();
+}
+function submitAnswer(e){
+  e.preventDefault();const value=clean($('answer').value);
+  if(!value){$('answer-message').textContent='Hai bạn hãy nhập nhận xét trước khi mở phần chốt.';$('answer-message').className='message error';$('answer').setAttribute('aria-invalid','true');$('answer').focus();return}
+  if(!/[\p{L}\p{N}]/u.test(value)){$('answer-message').textContent='Hãy viết nhận xét bằng một câu ngắn để cùng đối chiếu.';$('answer-message').className='message error';$('answer').setAttribute('aria-invalid','true');$('answer').focus();return}
+  state.answer=value;state.submitted=true;state.revealed=false;
+  $('answer').removeAttribute('aria-invalid');$('answer-message').textContent='Đã ghi nhận câu trả lời của hai bạn.';$('answer-message').className='message good';
+  renderResponse();$('reveal').focus({preventScroll:true});
+}
+
+// Button & Click Delegation
+document.addEventListener('click',function(e){
+  // Direct clicks inside Phase 1 SVG canvas (vertices, ruler marks, intersection, join guides)
+  const vHit=e.target.closest('[data-vertex]');
+  if(vHit && vHit.closest('.drawing')){
+    const n=builderIndex();
+    if(n<2 && state.build[n]<2 && vHit.closest('#card-'+n)){
+      selectCenter(n, vHit.dataset.vertex);
+      renderBuild();
+      return;
+    }
+  }
+  const rTick=e.target.closest('[data-ruler-cm]');
+  if(rTick && rTick.closest('.drawing')){
+    const n=builderIndex();
+    if(n<2 && state.build[n]<2 && rTick.closest('#card-'+n)){
+      selectRadius(n, Number(rTick.dataset.rulerCm));
+      renderBuild();
+      return;
+    }
+  }
+  const pickTop=e.target.closest('[data-pick-top]');
+  if(pickTop && pickTop.closest('.drawing')){
+    const n=builderIndex();
+    if(n<2 && state.build[n]===2 && pickTop.closest('#card-'+n)){
+      advanceBuild();
+      return;
+    }
+  }
+  const joinGuide=e.target.closest('[data-direct-join]');
+  if(joinGuide && joinGuide.closest('.drawing')){
+    const n=builderIndex();
+    if(n<2 && state.build[n]===3 && joinGuide.closest('#card-'+n)){
+      advanceBuild();
+      return;
+    }
+  }
+
+  const button=e.target.closest('button[data-action]');if(!button||button.disabled)return;
+  const a=button.dataset.action;
+  if(a==='center'){
+    const n=builderIndex();if(n>1)return;
+    selectCenter(n, button.dataset.value);
+    withFocus(renderBuild);
+  }
+  else if(a==='radius'){
+    const n=builderIndex();if(n>1)return;
+    selectRadius(n, Number(button.dataset.value));
+    withFocus(renderBuild);
+  }
+  else if(a==='draw-arc'){
+    const n=builderIndex();if(n>1)return;
+    const step=state.build[n], g=cardGeom(n), st=g.steps[step];
+    if(!state.center||!state.radius){setMessage('Chọn tâm cắm kim và mở khẩu độ trên thước rồi hãy vẽ cung.','error');return}
+    if(state.center!==st.center){setMessage('Hãy xem lại tâm cung tròn trong yêu cầu của bước này (cắm kim tại '+prime(st.center,n)+').','error');return}
+    if(state.radius!==st.radius){setMessage('Khẩu độ compa cần bằng độ dài cạnh được yêu cầu ('+st.radius+' cm). Hãy kiểm tra lại trên thước.','error');return}
+    advanceBuild();
+  }
+  else if(a==='select-A'||a==='join')advanceBuild();
+  else if(a==='to-compare')phase(2);
+  else if(a==='nav')phase(Number(button.dataset.phase));
+  else if(a==='rotate')rotateStep90();
+  else if(a==='flip')flipPose();
+  else if(a==='nudge')move(Number(button.dataset.dx),Number(button.dataset.dy));
+  else if(a==='reset-pose')resetPose();
+  else if(a==='hint-pose'){
+    $('match-status').textContent=state.attempts
+      ? 'Hãy nhìn B′ với B và C′ với C: vì Bạn 2 dựng từ đáy B′A′ = 5 cm nên cần Lật mặt hình và nắm đỉnh xoay cho khớp hướng, rồi kéo chồng lên ΔABC.'
+      : 'Hãy kéo nút ⇄ Lật trên hình và nắm một đỉnh A′, B′, C′ xoay thử, rồi quan sát các đỉnh tương ứng.';
+  }
+  else if(a==='check-angles')showAngles();
+  else if(a==='to-response')phase(3);
+  else if(a==='hint-answer'){state.hint=!state.hint;renderResponse()}
+  else if(a==='edit-answer'){
+    state.submitted=false;state.revealed=false;renderResponse();$('answer-message').textContent='';$('answer').focus();
+  }
+  else if(a==='reveal'){
+    if(!state.submitted||!state.answer)return;
+    state.revealed=true;state.hint=false;renderResponse();$('knowledge-heading').focus({preventScroll:true});$('knowledge').scrollIntoView({block:'nearest',behavior:'auto'});announce('Đã mở phần chốt kiến thức. Hãy đối chiếu với nhận xét của hai bạn.');
+  }
+  else if(a==='back-to-board')phase(2);
+  else if(a==='fullscreen')toggleFullscreen();
+  else if(a==='restart')$('restart-dialog').showModal();
+  else if(a==='cancel-restart')$('restart-dialog').close();
+  else if(a==='confirm-restart'){$('restart-dialog').close();initialize();$('heading-1').focus({preventScroll:true});window.scrollTo({top:0,behavior:'auto'})}
+});
+
+// Direct Pointer Manipulation on Phase 1 Drawing Canvas (Ruler aperture drag & Compass rotation sweep)
+function svgPoint(svgEl,e){
+  const m=svgEl.getScreenCTM();
+  return m?new DOMPoint(e.clientX,e.clientY).matrixTransform(m.inverse()):null;
+}
+
+document.addEventListener('pointerdown',function(e){
+  if(state.phase!==1)return;
+  const n=builderIndex();if(n>1||state.build[n]>=2)return;
+  const svg=$('drawing-'+n);
+  if(!svg||!svg.contains(e.target))return;
+  const p=svgPoint(svg,e);if(!p)return;
+
+  // Check if grabbing the compass pencil handle to rotate & draw arc directly
+  if(e.target.closest('[data-compass-handle="pencil"]')){
+    const g=cardGeom(n), st=g.steps[state.build[n]];
+    if(!state.center){
+      setMessage('Hãy nhấp chọn đỉnh trên hình để cắm kim compa trước khi xoay.','error');
+      return;
+    }
+    const cPt=g.pts[state.center];
+    const startAng=Math.atan2(p.y-cPt.y, p.x-cPt.x)*180/Math.PI;
+    buildDrag={
+      mode:'compass-sweep',
+      pointer:e.pointerId,
+      card:n,
+      svg:svg,
+      centerPt:cPt,
+      valid:(state.center===st.center && state.radius===st.radius)
+    };
+    state.compassAngle=startAng;
+    state.sweptMin=startAng;
+    state.sweptMax=startAng;
+    $('app').setPointerCapture(e.pointerId);
+    e.preventDefault();
+    return;
+  }
+
+  // Check if dragging along the built-in ruler at the bottom of the canvas (y >= 268)
+  if(p.y>=268){
+    buildDrag={mode:'ruler-drag',pointer:e.pointerId,card:n,svg:svg};
+    $('app').setPointerCapture(e.pointerId);
+    const cm=Math.max(3,Math.min(6,Math.round((p.x-58)/SCALE_BUILD)));
+    selectRadius(n,cm);
+    renderBuild();
+    e.preventDefault();
+  }
+});
+
+document.addEventListener('pointermove',function(e){
+  if(!buildDrag||e.pointerId!==buildDrag.pointer)return;
+  const n=buildDrag.card;
+  const svg=$('drawing-'+n);if(!svg)return;
+  const p=svgPoint(svg,e);if(!p)return;
+
+  if(buildDrag.mode==='ruler-drag'){
+    const cm=Math.max(3,Math.min(6,Math.round((p.x-58)/SCALE_BUILD)));
+    if(state.radius!==cm){
+      selectRadius(n,cm);
+      renderBuild();
+    }
+    e.preventDefault();
+  } else if(buildDrag.mode==='compass-sweep'){
+    const cPt=buildDrag.centerPt;
+    let ang=Math.atan2(p.y-cPt.y, p.x-cPt.x)*180/Math.PI;
+    // Keep angle in upper half-plane (-175 to -5 deg) for natural arc drawing
+    ang=Math.max(-172, Math.min(-8, ang));
+    state.compassAngle=ang;
+    if(buildDrag.valid){
+      state.sweptMin=state.sweptMin===null?ang:Math.min(state.sweptMin,ang);
+      state.sweptMax=state.sweptMax===null?ang:Math.max(state.sweptMax,ang);
+      const span=state.sweptMax-state.sweptMin;
+      if(span>=20){
+        buildDrag=null;
+        advanceBuild();
+        return;
+      }
+    } else {
+      const g=cardGeom(n), st=g.steps[state.build[n]];
+      if(state.center!==st.center){
+        setMessage('Ở bước này, hãy cắm kim vào đỉnh '+prime(st.center,n)+' trước khi xoay vẽ cung nhé!','error');
+      } else if(state.radius!==st.radius){
+        setMessage('Khẩu độ hiện tại là '+(state.radius||0)+' cm. Hãy mở khẩu độ '+st.radius+' cm trên thước nhé!','error');
+      }
+    }
+    renderBuild();
+    e.preventDefault();
+  }
+});
+
+function endBuildDrag(e){
+  if(!buildDrag||e.pointerId!==buildDrag.pointer)return;
+  const wasSweep=buildDrag.mode==='compass-sweep' && buildDrag.valid;
+  buildDrag=null;
+  if(wasSweep && state.sweptMax!==null && state.sweptMin!==null && (state.sweptMax-state.sweptMin)>=12){
+    advanceBuild();
+  } else {
+    renderBuild();
+  }
+}
+document.addEventListener('pointerup',endBuildDrag);
+document.addEventListener('pointercancel',endBuildDrag);
+
+// Phase 2 Direct Manipulation on #board:
+// 1. Grab vertex handle (A', B', C') -> Direct continuous rotation around center of A'B'C'
+// 2. Grab flip handle (⇄ Lật) -> Direct drag-across-axis 3D flip (or click to flip)
+// 3. Grab triangle body -> Direct translation drag
+function localPoint(e){
+  const matrix=$('board').getScreenCTM();
+  return matrix?new DOMPoint(e.clientX,e.clientY).matrixTransform(matrix.inverse()):null;
+}
+
+$('board').addEventListener('pointerdown',function(e){
+  if(state.matched||!e.target.closest('#moving-triangle')||e.button!==0)return;
+  const p=localPoint(e);if(!p)return;
+
+  const vRot=e.target.closest('[data-handle="vertex-rotate"]');
+  const fHit=e.target.closest('[data-handle="flip"]');
+
+  if(vRot){
+    const startPointerAngle=Math.atan2(p.y-state.pose.y, p.x-state.pose.x)*180/Math.PI;
+    dragging={
+      mode:'rotate',
+      pointer:e.pointerId,
+      startPointerAngle:startPointerAngle,
+      startPoseAngle:state.pose.angle
+    };
+  } else if(fHit){
+    dragging={
+      mode:'flip',
+      pointer:e.pointerId,
+      startX:p.x,
+      offsetX:0,
+      moved:false
+    };
+  } else {
+    dragging={
+      mode:'translate',
+      pointer:e.pointerId,
+      dx:p.x-state.pose.x,
+      dy:p.y-state.pose.y
+    };
+  }
+  $('board').setPointerCapture(e.pointerId);
+  renderBoard();
+  e.preventDefault();
+});
+
+$('board').addEventListener('pointermove',function(e){
+  if(!dragging||e.pointerId!==dragging.pointer)return;
+  const p=localPoint(e);if(!p)return;
+
+  if(dragging.mode==='translate'){
+    state.pose.x=p.x-dragging.dx;
+    state.pose.y=p.y-dragging.dy;
+    clampPose();
+    renderBoard();
+  } else if(dragging.mode==='rotate'){
+    const curAngle=Math.atan2(p.y-state.pose.y, p.x-state.pose.x)*180/Math.PI;
+    let nextAngle=normAngle(dragging.startPoseAngle + (curAngle - dragging.startPointerAngle));
+    // Gentle magnetic snap near 0, 90, 180, -90 deg
+    [0,90,180,-90,-180].forEach(function(snapA){
+      if(Math.abs(normAngle(nextAngle-snapA))<=7)nextAngle=snapA===180||snapA===-180?180:snapA;
+    });
+    state.pose.angle=nextAngle;
+    clampPose();
+    renderBoard();
+  } else if(dragging.mode==='flip'){
+    const dx=p.x-dragging.startX;
+    if(Math.abs(dx)>4)dragging.moved=true;
+    dragging.offsetX=Math.max(-42,Math.min(42,dx));
+    // Visual fold effect as pointer drags across the axis
+    state.pose.flipScale=Math.max(-1,Math.min(1, 1 - (Math.abs(dx)/28)));
+    renderBoard();
+  }
+  e.preventDefault();
+});
+
+function endDrag(e){
+  if(!dragging||e.pointerId!==dragging.pointer)return;
+  const mode=dragging.mode, moved=dragging.moved, offsetX=dragging.offsetX||0;
+  dragging=null;
+  state.pose.flipScale=1;
+  if(mode==='flip'){
+    // Flip whether dragged across the axis OR clicked directly on the flip handle
+    if(!moved || Math.abs(offsetX)>=14){
+      flipPose();
+      return;
+    }
+  }
+  state.attempts++;
+  if(!tryMatch())updatePoseFeedback();
+  renderBoard();
+}
+
+$('board').addEventListener('pointerup',endDrag);
+$('board').addEventListener('pointercancel',function(){
+  dragging=null;state.pose.flipScale=1;renderBoard();
+});
+$('board').addEventListener('keydown',function(e){
+  const dirs={ArrowLeft:[-20,0],ArrowRight:[20,0],ArrowUp:[0,-20],ArrowDown:[0,20]};
+  if(dirs[e.key]){e.preventDefault();move(dirs[e.key][0],dirs[e.key][1])}
+  else if(e.key==='r'||e.key==='R'){e.preventDefault();rotateStep90()}
+  else if(e.key==='f'||e.key==='F'){e.preventDefault();flipPose()}
+});
+
+$('answer-form').addEventListener('submit',submitAnswer);
+$('answer').addEventListener('input',function(){
+  state.answer=this.value;
+  $('char-count').textContent=this.value.length+' / 400';
+  $('answer-message').textContent='';
+  this.removeAttribute('aria-invalid');
+});
+
+const resizeObserver=new ResizeObserver(function(){
+  if(state&&state.phase===2){setLayout();renderBoard()}
+});
+resizeObserver.observe($('board-wrap'));
+
+function initialize(){
+  state=fresh();layout=null;dragging=null;buildDrag=null;
+  $('answer').value='';$('char-count').textContent='0 / 400';$('answer-message').textContent='';$('answer').removeAttribute('aria-invalid');
+  $('angle-panel').hidden=true;$('to-response').disabled=true;
+  $('match-status').textContent='Chồng các đỉnh tương ứng A–A′, B–B′, C–C′.';
+  renderBuild();renderResponse();phase(1);
+}
+initialize();
+})();
+</script>
+</body>
+</html>
