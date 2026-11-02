@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="vi" data-version="2026-11-02-compact">
+<html lang="vi" data-version="2026-11-02-compact-2">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -248,6 +248,10 @@ h2[tabindex="-1"]:focus,h3[tabindex="-1"]:focus{outline:none}
 :fullscreen .drawing,.full-window .drawing{max-height:380px}
 @media(max-width:760px){.wrap{padding:13px 14px}.hero{flex-wrap:wrap;gap:10px}.hero h1{font-size:24px}.header-actions{margin-left:auto}.phase-head{padding:16px}.build-grid{padding:12px;gap:10px}.builder{margin:0 12px 12px}.board-wrap{margin:8px 12px 0}.compare-toolbar{padding:12px 12px 3px}.status-row{padding:8px 12px 12px}.compare-foot{padding:5px 12px;align-items:flex-end}.response-body{padding:18px 16px}.problem-data{font-size:17px}.problem-condition{font-size:14px}}
 @media(max-width:450px){.topline{display:none}.hero{gap:8px}.hero h1{font-size:23px}.hero .reset-top{font-size:13px;min-width:auto}.hero .reset-top:after{content:none}.header-actions button{font-size:12px;padding:8px 10px}.steps{margin-top:12px}.step-btn{font-size:12px;gap:6px;padding:8px 5px}.problem-data span{padding:0 2px}.status-row .match-status{flex:1 0 100%}.status-row{justify-content:flex-end}.legend{font-size:12px}.transform-tools{gap:4px}.transform-tools button{padding:8px 10px}.controls-line{gap:8px}.quick-group{gap:8px}.choice-group legend{font-size:11px}.choice-row button{padding:6px 10px;min-width:46px}.phase-bottom{padding:10px 12px}}
+
+.hero{position:sticky;top:0;z-index:15;background:var(--bg);padding:8px 0}
+.surface{scroll-margin-top:96px}
+@media(max-width:760px){.surface{scroll-margin-top:140px}}
 </style>
 </head>
 <body>
@@ -925,14 +929,16 @@ function updateNav(){
   }
 }
 
-function phase(n){
+function phase(n,focus){
   if(n===2&&state.build[1]!==4||n===3&&!state.angles)return;
   state.phase=n;
   for(let i=1;i<=3;i++)$('phase-'+i).hidden=i!==n;
   updateNav();
   if(n===2){setLayout();renderBoard()}
-  $('heading-'+n).focus({preventScroll:true});
-  $('phase-'+n).scrollIntoView({block:'start',behavior:'auto'});
+  if(focus!==false){
+    $('heading-'+n).focus({preventScroll:true});
+    $('phase-'+n).scrollIntoView({block:'start',behavior:'auto'});
+  }
 }
 
 function setLayout(){
@@ -1483,7 +1489,7 @@ function initialize(){
   $('answer').value='';$('char-count').textContent='0 / 400';$('answer-message').textContent='';$('answer').removeAttribute('aria-invalid');
   $('angle-panel').hidden=true;$('to-response').disabled=true;
   $('match-status').textContent='Chồng các đỉnh tương ứng A–A′, B–B′, C–C′.';
-  renderBuild();renderResponse();phase(1);
+  renderBuild();renderResponse();phase(1,false);
 }
 initialize();
 })();
