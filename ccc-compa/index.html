@@ -312,7 +312,7 @@ h2[tabindex="-1"]:focus,h3[tabindex="-1"]:focus{outline:none}
       </div>
     </div>
     <div id="board-wrap" class="board-wrap">
-      <svg id="board" class="board-svg" viewBox="0 0 1000 450" aria-label="Bàn chồng hình: kéo thân tam giác để di chuyển, nắm đỉnh để xoay trực tiếp, hoặc kéo tay cầm lật qua trục" role="group"></svg>
+      <svg id="board" class="board-svg" viewBox="0 0 1000 450" aria-label="Bàn chồng hình: kéo tam giác để di chuyển, nắm đỉnh để xoay, dùng nút Lật để lật hình" role="group"></svg>
     </div>
     <p class="board-caption">Hình luyện tập — theo dữ kiện HĐ2–HĐ3 SGK</p>
     <div class="compare-foot">
@@ -995,7 +995,7 @@ function renderBoard(){
     out+='<circle cx="'+state.pose.x.toFixed(1)+'" cy="'+state.pose.y.toFixed(1)+'" r="'+rGuide.toFixed(1)+'" fill="none" stroke="#d57927" stroke-width="1.6" stroke-dasharray="5 5"/>';
   }
 
-  out+='<g id="moving-triangle" class="movable'+(dragging?' dragging':'')+'" role="img" tabindex="'+(state.matched?'-1':'0')+'" aria-label="Tam giác A phẩy B phẩy C phẩy: kéo thân hình để di chuyển, nắm các đỉnh để xoay, kéo nút lật qua trục để lật">';
+  out+='<g id="moving-triangle" class="movable'+(dragging?' dragging':'')+'" role="img" tabindex="'+(state.matched?'-1':'0')+'" aria-label="Tam giác A phẩy B phẩy C phẩy: kéo để di chuyển, nắm các đỉnh để xoay, dùng nút Lật để lật hình">';
   out+='<polygon points="'+polygon(m)+'" class="face'+(state.matched?' matched-line':'')+'"/>';
 
   if(!state.matched){
@@ -1045,9 +1045,9 @@ function updatePoseFeedback(){
   const dCenter=Math.hypot(state.pose.x-layout.target.x, state.pose.y-layout.target.y);
   if(dCenter<layout.s*1.2){
     if(state.pose.flipped){
-      $('match-status').textContent='Tâm hai hình đã gần nhau nhưng tam giác A′B′C′ đang bị ngược mặt. Hãy kéo nút ⇄ Lật trên hình (hoặc bấm Lật) rồi xoay đỉnh nhé!';
+      $('match-status').textContent='Hai hình đã gần nhau. Hãy quan sát lại mặt và hướng của tam giác xanh.';
     } else if(Math.abs(normAngle(state.pose.angle))>12){
-      $('match-status').textContent='Đã đúng mặt lật! Hãy nắm một đỉnh A′, B′ hoặc C′ trên hình và xoay cho các đỉnh tương ứng trùng nhau.';
+      $('match-status').textContent='Hãy quan sát hướng của các đỉnh tương ứng.';
     }
   }
 }
@@ -1239,8 +1239,8 @@ document.addEventListener('click',function(e){
   else if(a==='reset-pose')resetPose();
   else if(a==='hint-pose'){
     $('match-status').textContent=state.attempts
-      ? 'Hãy nhìn B′ với B và C′ với C: vì Bạn 2 dựng từ đáy B′A′ = 5 cm nên cần Lật mặt hình và nắm đỉnh xoay cho khớp hướng, rồi kéo chồng lên ΔABC.'
-      : 'Hãy kéo nút ⇄ Lật trên hình và nắm một đỉnh A′, B′, C′ xoay thử, rồi quan sát các đỉnh tương ứng.';
+      ? 'Hãy so sánh vị trí B′ với B và C′ với C trước khi thử lại.'
+      : 'Hãy quan sát hướng của ba đỉnh tương ứng rồi thử xoay hoặc lật.';
   }
   else if(a==='check-angles')showAngles();
   else if(a==='to-response')phase(3);
