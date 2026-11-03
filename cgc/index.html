@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="vi" data-version="2026-11-03-v2">
+<html lang="vi" data-version="2026-11-03-v3">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light">
 <title>Hai cạnh và một góc</title>
@@ -113,9 +113,9 @@ function renderCards(){
  }
  $('to-compare').disabled=a!==-1;updateNav();
 }
-function inputValues(n){let valid=true;const vals=[0,1].map(i=>{const el=$('value-'+n+'-'+i),value=el.value===''?NaN:Number(el.value),b=CFG.bounds[i];if(!Number.isFinite(value)||value<b[0]||value>b[1])valid=false;return value});return {valid,vals}}
+function inputValues(n){let valid=true,reason='';const vals=[0,1].map(i=>{const el=$('value-'+n+'-'+i),value=el.value===''?NaN:Number(el.value),b=CFG.bounds[i];if(!Number.isFinite(value)||value<b[0]||value>b[1]){valid=false;reason='Nhập đủ số đo trong khoảng '+b[0]+'–'+b[1]+'.'}else if(Math.abs((value-b[0])/b[2]-Math.round((value-b[0])/b[2]))>1e-7){valid=false;reason=CFG.kind==='sas'&&i===0?'Nhập độ dài theo bước 0,1 cm.':'Nhập số độ nguyên cho góc.'}return value});return {valid,vals,reason}}
 function updateValues(n){
- const result=inputValues(n);if(!result.valid)return;
+ const result=inputValues(n);if(!result.valid){$('feedback-'+n).textContent=result.reason;$('feedback-'+n).className='feedback error';return}
  state.values[n]=result.vals;renderScene(n);
  const invalid=CFG.kind==='asa'&&!canonical(result.vals);
  $('feedback-'+n).textContent=invalid?'Hai tia chưa tạo thành tam giác ở phía đã chọn.':'';
@@ -123,7 +123,7 @@ function updateValues(n){
 }
 function save(n){
  if(active()!==n)return;const v=inputValues(n),msg=$('feedback-'+n);
- if(!v.valid){msg.textContent='Kiểm tra lại các số đo trong hai ô.';msg.className='feedback error';return}
+ if(!v.valid){msg.textContent=v.reason||'Kiểm tra lại các số đo trong hai ô.';msg.className='feedback error';return}
  if(!canonical(v.vals)){msg.textContent='Tổng hai góc phải nhỏ hơn 180° để hai tia gặp nhau ở phía đã chọn.';msg.className='feedback error';return}
  if(v.vals.some((x,i)=>Math.abs(x-CFG.target[i])>1e-7)){msg.textContent=CFG.kind==='sas'?'Hãy kiểm tra độ dài cạnh và góc ở giữa theo đề bài.':'Hãy kiểm tra số đo hai góc kề cạnh đã cho.';msg.className='feedback error';return}
  state.values[n]=CFG.target.slice();state.saved[n]=true;constructionDrag=null;renderCards();announce(n===0?'Đổi lượt: mời bạn 2 dựng hình.':'Hai tam giác đã sẵn sàng để chồng hình.');
@@ -163,7 +163,7 @@ function nudge(x,y){if(state.matched)return;state.pose.x+=x;state.pose.y+=y;stat
 function resetPose(){state.pose={angle:90,flipped:true,x:layout.start.x,y:layout.start.y};state.matched=false;state.checked=false;state.attempts=0;$('measurements').hidden=true;$('to-response').disabled=true;$('match-status').textContent='Chồng đúng các đỉnh A–A′, B–B′, C–C′.';drawBoard();updateNav()}
 function check(){
  if(!state.matched)return;state.checked=true;
- $('measure-heading').textContent=CFG.kind==='sas'?'Cặp cạnh còn lại và các góc tương ứng':'Hai cặp cạnh còn lại';
+ $('measure-heading').textContent=CFG.kind==='sas'?'Cặp cạnh còn lại và các góc tương ứng':'Hai cặp cạnh và góc còn lại';
  const lengths=[['AB',distance(TARGET.A,TARGET.B)],['AC',distance(TARGET.A,TARGET.C)],['BC',distance(TARGET.B,TARGET.C)]];
  let items;
  if(CFG.kind==='sas'){
