@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="vi" data-version="2026-11-03-v1">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light">
+<title>Hai cạnh và một góc</title>
+<style>
+:root{--ink:#202b40;--muted:#5a677b;--paper:#f7f6f2;--line:#dce2e9;--accent:#4852b4;--soft:#eeeffb;--teal:#087567;--orange:#ad541d}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font:16px/1.6 Tahoma,Arial,sans-serif}h1,h2,h3,p{margin:0}button,input,textarea{font:inherit}button{cursor:pointer;border:1px solid var(--line);background:white;color:var(--ink);border-radius:11px;min-height:44px;padding:8px 15px;font-weight:700}button:hover:not(:disabled){background:var(--soft)}button:disabled{opacity:.4;cursor:default}button.primary{background:var(--accent);border-color:var(--accent);color:white}button.quiet{background:transparent;border-color:transparent;color:var(--muted)}button:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex="0"]:focus-visible{outline:3px solid #c87228;outline-offset:3px}[hidden]{display:none!important}[tabindex="-1"]:focus{outline:none}
+.wrap{max-width:1180px;padding:18px 24px;margin:auto}.top{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;gap:15px;background:var(--paper);padding:9px 0}.kicker{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--accent)}h1{font-size:clamp(23px,2.8vw,31px);line-height:1.3;margin-top:3px;letter-spacing:-.5px}.top-tools{display:flex;align-items:center;gap:5px;flex-shrink:0}.top-tools button{font-size:13px;white-space:nowrap}.tag{font-size:12px;color:var(--muted)}.steps{display:flex;gap:9px;margin:17px 0 14px}.steps button{flex:1;border-color:transparent;background:transparent;text-align:left;font-size:14px;padding:10px 14px}.steps button[aria-current="step"]{background:white;border-color:var(--line)}.steps b{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--soft);color:var(--accent);margin-right:8px}
+.surface{background:white;border:1px solid var(--line);border-radius:20px;overflow:hidden;scroll-margin-top:98px}.problem{padding:18px 22px;background:var(--soft);border-bottom:1px solid var(--line)}.problem h2{font-size:clamp(20px,2.2vw,25px);line-height:1.45;margin-top:4px;font-weight:750}.given{display:flex;align-items:center;gap:7px 22px;flex-wrap:wrap;font-size:18px;font-weight:700;margin-top:9px}.given>span{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}.given-note{font-size:13px;margin-top:7px;color:var(--muted)}
+.build-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:16px 20px 10px}.card{border:1.5px solid var(--line);border-radius:16px;overflow:hidden;background:#fdfefd}.card.active{border-color:var(--accent);box-shadow:0 0 0 2px var(--soft)}.card.complete{border-color:#81bdac}.card-title{padding:11px 15px 0;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:14px;font-weight:700}.card-state{font-size:11px;padding:2px 8px;border-radius:99px;background:#f0f3f6;color:var(--muted)}.complete .card-state{background:#e5f4ed;color:var(--teal)}.scene{display:block;width:100%;height:auto;aspect-ratio:480/320;touch-action:none;user-select:none;-webkit-user-select:none}.scene text,.board text{font-family:Tahoma,Arial,sans-serif}.handle{cursor:grab}.handle:active{cursor:grabbing}.geometry-label{paint-order:stroke;stroke:white;stroke-width:5px;stroke-linejoin:round}.control-area{padding:14px 16px;background:#fafbfc;border-top:1px solid #edf0f3}.turn{font-size:12px;color:var(--accent);font-weight:700;margin-bottom:8px}.fields{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}.field label{display:flex;align-items:center;gap:3px;font-size:13px;font-weight:600;margin-bottom:4px}.field input{width:108px;min-height:44px;padding:8px 10px;border:1px solid #aebbc9;border-radius:9px;background:white;color:var(--ink)}.fields .primary{margin-left:auto;font-size:14px}.feedback{font-size:13px;color:var(--muted);margin-top:8px}.feedback:empty{display:none}.feedback.error{color:#a43c20}.feedback.good{color:var(--teal)}.bottom{display:flex;align-items:center;justify-content:flex-end;gap:12px;border-top:1px solid var(--line);padding:12px 20px;background:#fcfdfb}.bottom-note{margin-right:auto;color:var(--muted);font-size:13px}.board-tools{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 20px 7px;flex-wrap:wrap}.legend{display:flex;gap:18px;font-size:13px;color:var(--muted)}.legend span:before{content:"";display:inline-block;width:17px;height:4px;vertical-align:3px;margin-right:6px;border-radius:3px;background:#4852b4}.legend span:last-child:before{background:#087567}.transform-tools{display:flex;gap:6px;flex-wrap:wrap}.board-wrap{margin:4px 20px 0;border:1px solid var(--line);border-radius:15px;background:#fcfdfc;overflow:hidden}.board{width:100%;height:auto;display:block;aspect-ratio:1000/440;min-height:280px;touch-action:none;user-select:none;-webkit-user-select:none}.moving{cursor:grab}.moving:focus-visible .moving-face{stroke:#c67224;stroke-width:4}.board-caption{font-size:10px;text-align:center;color:var(--muted);margin:5px 10px}.board-status{padding:9px 20px 15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.status{flex:1;background:var(--soft);padding:8px 12px;border-radius:10px;font-size:13px;min-width:230px}.status.success{color:var(--teal);background:#e5f4ee}.arrows{display:flex;gap:4px}.arrows button{padding:6px;width:42px;font-size:18px}.measurements{margin:0 20px 16px;padding:15px;background:#e8f5ef;border-radius:13px}.measurements h3{font-size:16px;color:var(--teal);margin-bottom:10px}.measure-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.measure-item{display:flex;align-items:center;justify-content:center;gap:3px;background:white;border:1px solid #cee5d9;padding:9px 5px;border-radius:10px;font-size:13px;white-space:nowrap}.hat{width:47px;height:31px;vertical-align:middle;overflow:visible;flex-shrink:0}.hat.prime{width:62px}.hat text{font:17px Tahoma,Arial,sans-serif;fill:currentColor}.hat path{stroke:currentColor;stroke-width:1.2;fill:none}.given .hat{width:52px;height:32px}.given .hat.prime{width:69px}.response{max-width:850px;margin:auto;padding:25px}.question{display:block;font-size:clamp(20px,2.1vw,25px);line-height:1.55;font-weight:750;margin-bottom:12px}.think{color:var(--muted);font-size:13px;margin-bottom:17px}textarea{display:block;width:100%;min-height:105px;resize:vertical;border:1px solid #aebbc9;border-radius:12px;padding:12px 14px;line-height:1.6}.answer-actions{display:flex;align-items:center;gap:8px;margin-top:13px}.counter{font-size:11px;color:var(--muted);text-align:right;margin-top:4px}.hint{background:#fff2df;border-radius:10px;padding:12px 15px;color:#7e4a22;font-size:14px;margin-top:13px}.own{border:1px solid var(--line);border-radius:13px;background:#f6f8fa;padding:17px}.own p{white-space:pre-wrap;overflow-wrap:anywhere;margin:7px 0;font-size:17px}.reveal-row{margin-top:18px}.knowledge{margin-top:20px;padding:22px;background:#fff4e4;border:1px solid #e8c795;border-radius:15px}.knowledge h3{color:#87451a;font-size:22px;line-height:1.4;margin-bottom:12px}.theorem{font-size:19px;font-weight:700;line-height:1.65}.position-note{font-size:14px;margin-top:12px;padding-top:12px;border-top:1px solid #e8d3b3}.application{font-size:15px;margin-top:13px;font-weight:600}.evidence{font-size:12px;color:#6f5d4d;margin-top:14px}.summary{margin-top:16px;padding:14px 17px;background:#edf7f1;color:#146951;border-radius:11px;font-size:14px}.footer{font-size:10px;color:var(--muted);margin:12px 0}.sr-only{position:absolute;width:1px;height:1px;clip:rect(0,0,0,0);overflow:hidden;white-space:nowrap}.dialog{border:1px solid var(--line);border-radius:16px;padding:25px;max-width:420px;width:calc(100% - 36px)}.dialog::backdrop{background:#24334866}.dialog p{margin:10px 0 20px;color:var(--muted)}.dialog-actions{display:flex;justify-content:flex-end;gap:8px}
+:fullscreen,.full-window{background:var(--paper)}:fullscreen .wrap,.full-window .wrap{max-width:1450px}
+@media(max-width:760px){.wrap{padding:12px 14px}.top{flex-wrap:wrap;gap:7px}.top-tools{margin-left:auto}.top h1{font-size:24px}.surface{scroll-margin-top:145px}.build-grid{grid-template-columns:1fr;padding:13px;gap:11px}.scene{max-height:330px}.steps{gap:3px;margin:12px 0}.steps button{font-size:12px;padding:8px 5px}.steps b{width:24px;height:24px;margin-right:5px}.problem{padding:16px}.given{font-size:16px;gap:5px 14px}.given-note{font-size:12px}.fields{gap:9px}.fields .primary{width:100%;margin:3px 0 0}.board-wrap{margin:4px 13px 0}.board{aspect-ratio:620/620;min-height:0;max-height:520px}.board-tools{padding:13px 13px 7px}.board-status{padding:8px 13px 13px}.status{flex:1 0 100%;min-width:0}.arrows{margin-left:auto}.measurements{margin:0 13px 14px}.measure-grid{grid-template-columns:1fr}.response{padding:20px 16px}.bottom{padding:11px 13px}.bottom-note{font-size:12px}.bottom button{font-size:14px}.knowledge{padding:18px}.theorem{font-size:18px}}
+@media(max-width:450px){.tag{display:none}.card:not(.active):not(.complete) .scene{display:none}.top-tools button{font-size:12px;padding:8px 10px}.field input{width:100px}.bottom{flex-wrap:wrap}.bottom-note{flex-basis:100%;margin:0}.bottom button{margin-left:auto}.transform-tools button{font-size:13px;padding:8px 10px}.given .hat{width:45px}.given .hat.prime{width:61px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<noscript>Hãy bật JavaScript để điều chỉnh mô hình và chồng hai tam giác. Hoạt động không cần thư viện ngoài.</noscript>
+<main class="wrap" id="app">
+<header class="top"><div><div class="kicker">Khám phá · Toán 7</div><h1 id="main-title">Hai cạnh và một góc</h1></div><div class="top-tools"><span class="tag">Nhóm đôi · khoảng 10 phút</span><button id="fullscreen" data-action="fullscreen" aria-pressed="false">⛶ <span id="fullscreen-label">Toàn màn hình</span></button><button class="quiet" data-action="restart" aria-label="Làm lại từ đầu">↺ Làm lại</button></div></header>
+<nav class="steps" aria-label="Tiến trình"><button id="nav-1" data-action="nav" data-stage="1" aria-current="step"><b>1</b>Ghép hai cạnh</button><button id="nav-2" data-action="nav" data-stage="2" disabled><b>2</b>Xoay, lật, chồng</button><button id="nav-3" data-action="nav" data-stage="3" disabled><b>3</b>Trả lời ngắn</button></nav>
+<section class="surface" id="stage-1" aria-labelledby="heading-1">
+<div class="problem"><div class="kicker">Đề bài</div><h2 id="heading-1" tabindex="-1">Dựng hai tam giác ABC và A′B′C′ có:</h2><div class="given" id="given"></div><p class="given-note">Mỗi bạn dựng một hình. Đổi lượt sau khi hoàn thành tam giác thứ nhất.</p></div>
+<div class="build-grid"><article class="card active" id="card-0"><div class="card-title"><span>Bạn 1 · ABC</span><span class="card-state" id="card-state-0">Đến lượt bạn</span></div><svg class="scene" id="scene-0" viewBox="0 0 480 320" role="group" aria-label="Mô hình dựng tam giác của bạn 1"></svg><div class="control-area" id="controls-0"></div></article><article class="card" id="card-1"><div class="card-title"><span>Bạn 2 · A′B′C′</span><span class="card-state" id="card-state-1">Chờ đổi lượt</span></div><svg class="scene" id="scene-1" viewBox="0 0 480 320" role="group" aria-label="Mô hình dựng tam giác của bạn 2"></svg><div class="control-area" id="controls-1" hidden></div></article></div>
+<div class="bottom"><span class="bottom-note" id="build-note"></span><button class="primary" id="to-compare" data-action="compare" disabled>Thử chồng hai hình →</button></div></section>
+<section class="surface" id="stage-2" aria-labelledby="heading-2" hidden><div class="problem"><div class="kicker">So sánh hai hình</div><h2 id="heading-2" tabindex="-1">Hai tam giác vừa dựng có chồng khít lên nhau không?</h2></div><div class="board-tools"><div class="legend"><span>ABC</span><span>A′B′C′</span></div><div class="transform-tools"><button id="rotate" data-action="rotate">↻ Xoay 90°</button><button id="flip" data-action="flip">⇄ Lật</button><button class="quiet" data-action="reset-pose">Đặt lại hình</button></div></div><div class="board-wrap" id="board-wrap"><svg id="board" class="board" viewBox="0 0 1000 440" role="group" aria-label="Kéo tam giác xanh để di chuyển; kéo một đỉnh để xoay; dùng nút Lật để lật hình"></svg></div><p class="board-caption">Hình luyện tập — chuyển thể từ SGK Toán 7 KNTT</p><div class="board-status"><p class="status" id="match-status" role="status">Chồng đúng các đỉnh A–A′, B–B′, C–C′.</p><div class="arrows" aria-label="Di chuyển hình"><button data-action="nudge" data-x="-20" data-y="0" aria-label="Sang trái">←</button><button data-action="nudge" data-x="0" data-y="-20" aria-label="Lên trên">↑</button><button data-action="nudge" data-x="0" data-y="20" aria-label="Xuống dưới">↓</button><button data-action="nudge" data-x="20" data-y="0" aria-label="Sang phải">→</button></div><button class="primary" id="check" data-action="check" disabled>Kiểm tra thêm</button></div><div class="measurements" id="measurements" hidden><h3 id="measure-heading"></h3><div class="measure-grid" id="measure-grid"></div></div><div class="bottom"><button class="primary" id="to-response" data-action="response" disabled>Cùng rút nhận xét →</button></div></section>
+<section class="surface" id="stage-3" aria-labelledby="heading-3" hidden><div class="problem"><div class="kicker">Nghĩ riêng · thống nhất cùng bạn</div><h2 id="heading-3" tabindex="-1">Từ quan sát đến nhận xét</h2></div><div class="response"><form id="answer-form" novalidate><label id="question" class="question" for="answer"></label><p class="think">Mỗi bạn suy nghĩ trước, rồi hai bạn cùng viết một câu ngắn.</p><div id="answer-entry"><textarea id="answer" rows="3" maxlength="400" placeholder="Theo chúng em, …" aria-describedby="answer-message"></textarea><div class="counter" id="counter">0 / 400</div><div class="answer-actions"><button class="primary" type="submit" id="submit-answer">Gửi nhận xét</button><button type="button" class="quiet" data-action="hint">Gợi ý</button></div></div><p id="answer-message" class="feedback" role="status"></p></form><div id="hint" class="hint" hidden></div><div class="own" id="own" hidden><div class="kicker">Nhận xét của hai bạn</div><p id="own-answer"></p><button class="quiet" data-action="edit">Sửa nhận xét</button></div><div class="reveal-row" id="reveal-row" hidden><button class="primary" id="reveal" data-action="reveal">Xem chốt kiến thức →</button></div><section class="knowledge" id="knowledge" aria-labelledby="knowledge-heading" hidden><h3 id="knowledge-heading" tabindex="-1"></h3><p class="theorem" id="theorem"></p><div class="position-note" id="position-note"></div><p class="application" id="application"></p><p class="evidence">Dựng và chồng hình giúp ta hình thành nhận xét. SGK thừa nhận định lí trên; quan sát này không phải là chứng minh cho mọi tam giác.</p></section><div class="summary" id="summary" hidden>✓ Đã dựng hai hình · ✓ Đã chồng khít · ✓ Đã viết và đối chiếu nhận xét</div></div><div class="bottom"><button class="quiet" data-action="back">← Xem lại mô hình</button></div></section>
+<footer class="footer" id="source"></footer><p class="sr-only" id="announcer" role="status" aria-live="polite"></p>
+</main>
+<dialog class="dialog" id="restart-dialog" aria-labelledby="restart-heading"><h2 id="restart-heading">Làm lại từ đầu?</h2><p>Hai hình và nhận xét của lượt này sẽ được xóa.</p><div class="dialog-actions"><button data-action="cancel" autofocus>Tiếp tục lượt này</button><button class="primary" data-action="confirm-restart">Làm lại</button></div></dialog>
+<script>
+'use strict';
+(function(){
+const CFG={"kind": "sas", "title": "Hai cạnh và một góc", "color": "#4852b4", "soft": "#eeeffb", "buildLabel": "Ghép hai cạnh", "target": [3, 60], "initial": [[2.2, 35], [4.2, 95]], "bounds": [[1, 5, 0.1], [15, 145, 1]], "question": "Qua hoạt động, ngoài hai cặp cạnh tương ứng bằng nhau, cần có thêm điều kiện nào về góc để kết luận hai tam giác bằng nhau?", "hint": "Quan sát đỉnh chung của hai cạnh đã biết. Góc dùng khi dựng nằm ở đâu so với hai cạnh ấy?", "theoremTitle": "Cạnh - góc - cạnh (c.g.c)", "theorem": "Nếu hai cạnh và góc xen giữa của tam giác này bằng hai cạnh và góc xen giữa của tam giác kia thì hai tam giác đó bằng nhau.", "short": "c.g.c", "source": "Chuyển thể từ HĐ1–HĐ2, Hình 4.27–4.28, SGK Toán 7 KNTT, trang 70–71."};
+const $=id=>document.getElementById(id),RAD=Math.PI/180,KEYS=['A','B','C'];
+const mul=(a,b)=>[a[0]*b[0]+a[1]*b[2],a[0]*b[1]+a[1]*b[3],a[2]*b[0]+a[3]*b[2],a[2]*b[1]+a[3]*b[3]];
+const apply=(p,m)=>({x:m[0]*p.x+m[1]*p.y,y:m[2]*p.x+m[3]*p.y});
+const I=[1,0,0,1],F=[-1,0,0,1],R=[0,-1,1,0],SECOND=mul(R,F);
+const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y),clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const norm=a=>((a+180)%360+360)%360-180;
+function matrix(a,flipped){const c=Math.cos(a*RAD),s=Math.sin(a*RAD),f=flipped?-1:1;return [c*f,-s,s*f,c]}
+function sas(length,angle){return {A:{x:0,y:0},B:{x:4,y:0},C:{x:length*Math.cos(angle*RAD),y:-length*Math.sin(angle*RAD)}}}
+function asa(beta,gamma){if(!Number.isFinite(beta+gamma)||beta<=0||gamma<=0||beta+gamma>=180)return null;const side=3*Math.sin(gamma*RAD)/Math.sin((beta+gamma)*RAD);return {B:{x:0,y:0},C:{x:3,y:0},A:{x:side*Math.cos(beta*RAD),y:-side*Math.sin(beta*RAD)}}}
+function canonical(v){return CFG.kind==='sas'?sas(v[0],v[1]):asa(v[0],v[1])}
+const TARGET=canonical(CFG.target),centroid=p=>({x:KEYS.reduce((s,k)=>s+p[k].x,0)/3,y:KEYS.reduce((s,k)=>s+p[k].y,0)/3});
+const CG=centroid(TARGET),MODEL=Object.fromEntries(KEYS.map(k=>[k,{x:TARGET[k].x-CG.x,y:TARGET[k].y-CG.y}]));
+let state,layout=null,drag=null,constructionDrag=null;
+function fresh(){return {stage:1,values:CFG.initial.map(v=>v.slice()),saved:[false,false],matched:false,checked:false,pose:{angle:90,flipped:true,x:735,y:225},attempts:0,answer:'',submitted:false,revealed:false}}
+function active(){return !state.saved[0]?0:!state.saved[1]?1:-1}
+function prime(k,n){return k+(n===1?'′':'')}
+function announce(s){$('announcer').textContent=s}
+function num(v,d){return v.toFixed(d||0).replace('.',',')}
+function hat(name){const isPrime=name.includes('′'),w=isPrime?78:58;return '<svg class="hat'+(isPrime?' prime':'')+'" viewBox="0 0 '+w+' 38" role="img" aria-label="góc '+name+'"><path d="M5 10 L'+w/2+' 3 L'+(w-5)+' 10"/><text x="'+w/2+'" y="32" text-anchor="middle">'+name+'</text></svg>'}
+function line(a,b,color,width,dash){return '<path d="M'+a.x+' '+a.y+' L'+b.x+' '+b.y+'" fill="none" stroke="'+color+'" stroke-width="'+(width||2.5)+'"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/>'}
+function pathArc(center,r,start,end,map){const points=[];const n=32;for(let i=0;i<=n;i++){const a=(start+(end-start)*i/n)*RAD;points.push(map({x:center.x+r*Math.cos(a),y:center.y+r*Math.sin(a)}))}return 'M'+points.map(p=>p.x.toFixed(2)+','+p.y.toFixed(2)).join(' L')}
+function protractor(center,start,direction,map,scale){
+ const radius=43/scale;let out='<g aria-hidden="true"><path d="'+pathArc(center,radius,start,start+direction*180,map)+'" fill="none" stroke="#c7b58f" stroke-width="1.2"/>';
+ for(let t=0;t<=180;t+=10){const a=(start+direction*t)*RAD,p=map({x:center.x+radius*Math.cos(a),y:center.y+radius*Math.sin(a)}),q=map({x:center.x+(radius-(t%30===0?7:4)/scale)*Math.cos(a),y:center.y+(radius-(t%30===0?7:4)/scale)*Math.sin(a)});out+=line(p,q,'#b5a17c',1);if(t%30===0){const z=map({x:center.x+(radius+10/scale)*Math.cos(a),y:center.y+(radius+10/scale)*Math.sin(a)});out+='<text x="'+z.x+'" y="'+(z.y+3)+'" text-anchor="middle" font-size="9" fill="#857454">'+t+'</text>'}}
+ return out+'</g>';
+}
+function sector(center,r,start,end,map,color){const c=map(center);return '<path d="M'+c.x+' '+c.y+' L'+pathArc(center,r,start,end,map).slice(1)+' L'+c.x+' '+c.y+'" fill="'+color+'22" stroke="'+color+'" stroke-width="1.4"/>'}
+function labels(p,n,color){const c=centroid(p);return KEYS.filter(k=>p[k]).map(k=>{const q=p[k],d=distance(q,c)||1,x=q.x+(q.x-c.x)/d*20,y=q.y+(q.y-c.y)/d*20+6;return '<circle cx="'+q.x+'" cy="'+q.y+'" r="4.5" fill="'+color+'"/><text class="geometry-label" x="'+x+'" y="'+y+'" text-anchor="middle" font-size="20" font-weight="700" fill="'+color+'">'+prime(k,n)+'</text>'}).join('')}
+function midpointLabel(p,a,b,text,color){const c=centroid(p),x=(p[a].x+p[b].x)/2,y=(p[a].y+p[b].y)/2,d=Math.hypot(x-c.x,y-c.y)||1;return '<text class="geometry-label" x="'+(x+(x-c.x)/d*19)+'" y="'+(y+(y-c.y)/d*19+5)+'" text-anchor="middle" font-size="16" font-weight="600" fill="'+color+'">'+text+'</text>'}
+function renderScene(n){
+ const v=state.values[n],raw=canonical(v),valid=!!raw,m=n===0?I:SECOND;
+ const base=CFG.kind==='sas'?{A:{x:0,y:0},B:{x:4,y:0},C:{x:v[0]*Math.cos(v[1]*RAD),y:-v[0]*Math.sin(v[1]*RAD)}}:{B:{x:0,y:0},C:{x:3,y:0},A:raw?raw.A:{x:1.5,y:-1.5}};
+ const transformed=Object.fromEntries(KEYS.map(k=>[k,apply(base[k],m)]));
+ const xs=KEYS.map(k=>transformed[k].x),ys=KEYS.map(k=>transformed[k].y);
+ const scale=Math.min(65,320/Math.max(1,Math.max(...xs)-Math.min(...xs)),190/Math.max(1,Math.max(...ys)-Math.min(...ys)));
+ const cx=(Math.min(...xs)+Math.max(...xs))/2,cy=(Math.min(...ys)+Math.max(...ys))/2;
+ const map=p=>{const q=apply(p,m);return {x:240+(q.x-cx)*scale,y:157+(q.y-cy)*scale}};
+ const p=Object.fromEntries(KEYS.map(k=>[k,map(base[k])])),color=n===0?'#4852b4':'#087567',isActive=active()===n;
+ const svg=$('scene-'+n);svg.dataset.scale=scale;svg.dataset.cx=cx;svg.dataset.cy=cy;
+ let out='<rect x="12" y="10" width="456" height="300" rx="12" fill="#fcfdfc"/>';
+ if(CFG.kind==='sas'){
+   out+=protractor(base.A,0,-1,map,scale);
+   out+=sector(base.A,24/scale,0,-v[1],map,'#b06b25');
+   out+=line(p.A,p.B,'#4852b4',3)+line(p.A,p.C,'#087567',3);
+   if(state.saved[n])out+='<polygon points="'+KEYS.map(k=>p[k].x+','+p[k].y).join(' ')+'" fill="'+color+'14" stroke="'+color+'" stroke-width="2.6"/>';
+   else out+=line(p.B,p.C,'#aeb9c8',1.7,'5 5');
+   out+=labels(p,n,color)+midpointLabel(p,'A','B','4 cm','#4852b4')+midpointLabel(p,'A','C',num(v[0],1)+' cm','#087567');
+   const ac=map({x:.68*Math.cos(-v[1]*RAD/2),y:.68*Math.sin(-v[1]*RAD/2)});
+   out+='<text class="geometry-label" x="'+ac.x+'" y="'+(ac.y+4)+'" font-size="15" text-anchor="middle" fill="#9a591b">'+num(v[1])+'°</text>';
+   if(isActive)out+=handle(p.C,'side',prime('C',n));
+ }else{
+   out+=protractor(base.B,0,-1,map,scale)+protractor(base.C,180,1,map,scale);
+   const bdir={x:Math.cos(v[0]*RAD),y:-Math.sin(v[0]*RAD)},cdir={x:-Math.cos(v[1]*RAD),y:-Math.sin(v[1]*RAD)};
+   const d1=valid?distance(base.B,base.A)+.45:3.3,d2=valid?distance(base.C,base.A)+.45:3.3;
+   out+=line(p.B,map({x:base.B.x+bdir.x*d1,y:bdir.y*d1}),'#4852b4',2.3)+line(p.C,map({x:3+cdir.x*d2,y:cdir.y*d2}),'#087567',2.3)+line(p.B,p.C,'#68768a',3);
+   out+=sector(base.B,23/scale,0,-v[0],map,'#b06b25')+sector(base.C,23/scale,180,180+v[1],map,'#087567');
+   if(state.saved[n]&&valid)out+='<polygon points="'+KEYS.map(k=>p[k].x+','+p[k].y).join(' ')+'" fill="'+color+'13" stroke="'+color+'" stroke-width="2.5"/>';
+   if(valid)out+=labels(p,n,color);else{
+     for(const k of ['B','C'])out+='<circle cx="'+p[k].x+'" cy="'+p[k].y+'" r="4.5" fill="'+color+'"/><text x="'+p[k].x+'" y="'+(p[k].y+23)+'" text-anchor="middle" font-size="20" font-weight="700">'+prime(k,n)+'</text>';
+   }
+   out+=midpointLabel(p,'B','C','3 cm','#56677b');
+   const bt=map({x:.7*Math.cos(-v[0]*RAD/2),y:.7*Math.sin(-v[0]*RAD/2)}),ct=map({x:3+.7*Math.cos((180+v[1]/2)*RAD),y:.7*Math.sin((180+v[1]/2)*RAD)});
+   out+='<text class="geometry-label" x="'+bt.x+'" y="'+(bt.y+4)+'" text-anchor="middle" font-size="15" fill="#9a591b">'+num(v[0])+'°</text><text class="geometry-label" x="'+ct.x+'" y="'+(ct.y+4)+'" text-anchor="middle" font-size="15" fill="#087567">'+num(v[1])+'°</text>';
+   if(isActive){out+=handle(map({x:bdir.x*.95,y:bdir.y*.95}),'ray-b','Tia từ '+prime('B',n));out+=handle(map({x:3+cdir.x*.95,y:cdir.y*.95}),'ray-c','Tia từ '+prime('C',n))}
+ }
+ svg.innerHTML=out;
+}
+function handle(p,type,label){return '<g class="handle" data-handle="'+type+'" aria-label="'+label+'"><circle cx="'+p.x+'" cy="'+p.y+'" r="23" fill="transparent"/><circle cx="'+p.x+'" cy="'+p.y+'" r="9" fill="#d88a37" stroke="white" stroke-width="2.5"/></g>'}
+function fieldLabel(n,i){if(CFG.kind==='sas')return i===0?'A'+(n?'′':'')+'C'+(n?'′':'')+' (cm)':hat(n?'B′A′C′':'BAC')+' (°)';return hat(i===0?(n?'A′B′C′':'ABC'):(n?'A′C′B′':'ACB'))+' (°)'}
+function renderCards(){
+ const a=active();for(let n=0;n<2;n++){
+   $('card-'+n).className='card'+(a===n?' active':'')+(state.saved[n]?' complete':'');
+   $('card-state-'+n).textContent=state.saved[n]?'Đã dựng xong':a===n?'Đến lượt bạn':'Chờ đổi lượt';
+   $('controls-'+n).hidden=a!==n;
+   $('controls-'+n).innerHTML='<div class="turn">Lượt bạn '+(n+1)+'</div><div class="fields">'+[0,1].map(i=>'<div class="field"><label for="value-'+n+'-'+i+'">'+fieldLabel(n,i)+'</label><input id="value-'+n+'-'+i+'" data-card="'+n+'" data-param="'+i+'" type="number" inputmode="decimal" min="'+CFG.bounds[i][0]+'" max="'+CFG.bounds[i][1]+'" step="'+CFG.bounds[i][2]+'" value="'+state.values[n][i]+'"></div>').join('')+'<button class="primary" id="save-'+n+'" data-action="save" data-card="'+n+'">'+(CFG.kind==='sas'?'Nối '+(n?'B′C′':'BC')+' · hoàn thành hình':'Xác định giao điểm '+(n?'A′':'A'))+'</button></div><p class="feedback" id="feedback-'+n+'" role="status"></p>';
+   renderScene(n);
+ }
+ $('to-compare').disabled=a!==-1;updateNav();
+}
+function inputValues(n){let valid=true;const vals=[0,1].map(i=>{const el=$('value-'+n+'-'+i),value=el.value===''?NaN:Number(el.value),b=CFG.bounds[i];if(!Number.isFinite(value)||value<b[0]||value>b[1])valid=false;return value});return {valid,vals}}
+function updateValues(n){
+ const result=inputValues(n);if(!result.valid)return;
+ state.values[n]=result.vals;renderScene(n);
+ const invalid=CFG.kind==='asa'&&!canonical(result.vals);
+ $('feedback-'+n).textContent=invalid?'Hai tia chưa tạo thành tam giác ở phía đã chọn.':'';
+ $('feedback-'+n).className='feedback'+(invalid?' error':'');
+}
+function save(n){
+ if(active()!==n)return;const v=inputValues(n),msg=$('feedback-'+n);
+ if(!v.valid){msg.textContent='Kiểm tra lại các số đo trong hai ô.';msg.className='feedback error';return}
+ if(!canonical(v.vals)){msg.textContent='Tổng hai góc phải nhỏ hơn 180° để hai tia gặp nhau ở phía đã chọn.';msg.className='feedback error';return}
+ if(v.vals.some((x,i)=>Math.abs(x-CFG.target[i])>1e-7)){msg.textContent=CFG.kind==='sas'?'Hãy kiểm tra độ dài cạnh và góc ở giữa theo đề bài.':'Hãy kiểm tra số đo hai góc kề cạnh đã cho.';msg.className='feedback error';return}
+ state.values[n]=CFG.target.slice();state.saved[n]=true;constructionDrag=null;renderCards();announce(n===0?'Đổi lượt: mời bạn 2 dựng hình.':'Hai tam giác đã sẵn sàng để chồng hình.');
+ if(n===0)$('value-1-0').focus({preventScroll:true});else $('to-compare').focus({preventScroll:true});
+}
+function updateNav(){for(let n=1;n<=3;n++){const el=$('nav-'+n);el.disabled=n===2?!state.saved[1]:n===3?!state.checked:false;if(n===state.stage)el.setAttribute('aria-current','step');else el.removeAttribute('aria-current')}}
+function stage(n,focus){if(n===2&&!state.saved[1]||n===3&&!state.checked)return;state.stage=n;for(let j=1;j<=3;j++)$('stage-'+j).hidden=j!==n;updateNav();if(n===2){layoutBoard();drawBoard()}if(focus!==false){$('heading-'+n).focus({preventScroll:true});$('stage-'+n).scrollIntoView({block:'start',behavior:'auto'})}}
+function layoutBoard(){
+ const narrow=$('board-wrap').getBoundingClientRect().width<650;
+ const next=narrow?{w:620,h:620,s:44,target:{x:200,y:180},start:{x:420,y:425},narrow:true}:{w:1000,h:440,s:60,target:{x:280,y:230},start:{x:735,y:225},narrow:false};
+ if(!layout){state.pose.x=next.start.x;state.pose.y=next.start.y}else if(layout.narrow!==next.narrow){if(state.matched){state.pose.x=next.target.x;state.pose.y=next.target.y}else{state.pose.x=state.pose.x/layout.w*next.w;state.pose.y=state.pose.y/layout.h*next.h}}
+ layout=next;$('board').setAttribute('viewBox','0 0 '+layout.w+' '+layout.h);clampPose();
+}
+function verts(m,x,y){return KEYS.map(k=>{const p=apply(MODEL[k],m);return {k,x:x+p.x*layout.s,y:y+p.y*layout.s}})}
+function poly(v){return v.map(p=>p.x+','+p.y).join(' ')}
+function clampPose(){const m=matrix(state.pose.angle,state.pose.flipped),p=verts(m,0,0);state.pose.x=clamp(state.pose.x,35-Math.min(...p.map(q=>q.x)),layout.w-35-Math.max(...p.map(q=>q.x)));state.pose.y=clamp(state.pose.y,35-Math.min(...p.map(q=>q.y)),layout.h-35-Math.max(...p.map(q=>q.y)))}
+function boardLabels(v,x,y,primed,combined){return v.map(p=>{const d=Math.hypot(p.x-x,p.y-y)||1;return '<circle cx="'+p.x+'" cy="'+p.y+'" r="4" fill="'+(primed?'#087567':'#4852b4')+'"/><text class="geometry-label" x="'+(p.x+(p.x-x)/d*22)+'" y="'+(p.y+(p.y-y)/d*22+6)+'" text-anchor="middle" font-size="21" font-weight="700" fill="'+(primed?'#087567':'#4852b4')+'">'+p.k+(combined?', '+p.k+'′':primed?'′':'')+'</text>'}).join('')}
+function drawBoard(){
+ if(!layout)return;
+ const t=verts(I,layout.target.x,layout.target.y),m=verts(matrix(state.pose.angle,state.pose.flipped),state.pose.x,state.pose.y),focused=document.activeElement&&document.activeElement.id==='moving';
+ let out='<g aria-hidden="true"><polygon class="target-face" points="'+poly(t)+'" fill="#4852b410" stroke="#4852b4" stroke-width="2.6"/>'+boardLabels(t,layout.target.x,layout.target.y,false,state.matched)+'</g><g id="moving" class="moving" role="img" tabindex="'+(state.matched?'-1':'0')+'" aria-label="Tam giác A phẩy B phẩy C phẩy; mũi tên để di chuyển, R để xoay, F để lật"><polygon class="moving-face" points="'+poly(m)+'" fill="#08756726" stroke="#087567" stroke-width="2.8"'+(state.matched?' stroke-dasharray="9 6"':'')+'/>';
+ if(!state.matched){out+=boardLabels(m,state.pose.x,state.pose.y,true,false);out+=m.map(p=>'<circle data-rotate="true" cx="'+p.x+'" cy="'+p.y+'" r="20" fill="transparent" class="handle"/>').join('')}
+ $('board').innerHTML=out+'</g>';
+ if(focused&&!state.matched)$('moving').focus({preventScroll:true});
+ $('rotate').disabled=state.matched;$('flip').disabled=state.matched;document.querySelectorAll('[data-action="nudge"]').forEach(b=>b.disabled=state.matched);$('check').disabled=!state.matched;
+ $('match-status').className='status'+(state.matched?' success':'');
+ if(state.matched)$('match-status').textContent='Ba cặp đỉnh đã trùng khít.';
+}
+function tryMatch(){
+ if(state.pose.flipped||Math.abs(norm(state.pose.angle))>1e-7)return false;
+ const t=verts(I,layout.target.x,layout.target.y),m=verts(I,state.pose.x,state.pose.y);
+ if(!t.every((p,i)=>distance(p,m[i])<=layout.s*.4))return false;
+ state.pose.x=layout.target.x;state.pose.y=layout.target.y;state.matched=true;drag=null;announce('Hai hình đã chồng khít đúng ba cặp đỉnh.');return true;
+}
+function transformPose(kind){if(state.matched)return;if(kind==='rotate')state.pose.angle=norm(state.pose.angle+90);else{state.pose.flipped=!state.pose.flipped;state.pose.angle=norm(-state.pose.angle)}state.attempts++;clampPose();tryMatch();drawBoard()}
+function nudge(x,y){if(state.matched)return;state.pose.x+=x;state.pose.y+=y;state.attempts++;clampPose();tryMatch();drawBoard()}
+function resetPose(){state.pose={angle:90,flipped:true,x:layout.start.x,y:layout.start.y};state.matched=false;state.checked=false;state.attempts=0;$('measurements').hidden=true;$('to-response').disabled=true;$('match-status').textContent='Chồng đúng các đỉnh A–A′, B–B′, C–C′.';drawBoard();updateNav()}
+function check(){
+ if(!state.matched)return;state.checked=true;
+ $('measure-heading').textContent=CFG.kind==='sas'?'Cặp cạnh còn lại và các góc tương ứng':'Hai cặp cạnh còn lại';
+ const lengths=[['AB',distance(TARGET.A,TARGET.B)],['AC',distance(TARGET.A,TARGET.C)],['BC',distance(TARGET.B,TARGET.C)]];
+ let items;
+ if(CFG.kind==='sas'){
+   const ang=(u,v,w)=>Math.acos(clamp(((u.x-v.x)*(w.x-v.x)+(u.y-v.y)*(w.y-v.y))/(distance(u,v)*distance(w,v)),-1,1))/RAD;
+   items=['<span>BC = B′C′ ≈ '+num(lengths[2][1],2)+' cm</span>',hat('ABC')+' = '+hat('A′B′C′')+' ≈ '+num(ang(TARGET.A,TARGET.B,TARGET.C))+'°',hat('ACB')+' = '+hat('A′C′B′')+' ≈ '+num(ang(TARGET.A,TARGET.C,TARGET.B))+'°'];
+ }else items=['<span>AB = A′B′ ≈ '+num(lengths[0][1],2)+' cm</span>','<span>AC = A′C′ ≈ '+num(lengths[1][1],2)+' cm</span>',hat('BAC')+' = '+hat('B′A′C′')+' = 60°'];
+ $('measure-grid').innerHTML=items.map(s=>'<div class="measure-item">'+s+'</div>').join('');$('measurements').hidden=false;$('to-response').disabled=false;updateNav();
+}
+function renderResponse(){$('answer-entry').hidden=state.submitted;$('own').hidden=!state.submitted;$('own-answer').textContent=state.answer;$('reveal-row').hidden=!state.submitted||state.revealed;$('knowledge').hidden=!state.revealed;$('summary').hidden=!state.revealed}
+function submit(e){e.preventDefault();const value=$('answer').value.replace(/[\u200B-\u200D\u2060\uFEFF]/g,'').trim();if(!value||!/[\p{L}\p{N}]/u.test(value)){$('answer-message').textContent='Hai bạn hãy viết nhận xét bằng một câu ngắn trước khi mở phần chốt.';$('answer-message').className='feedback error';$('answer').focus();return}state.answer=value;state.submitted=true;state.revealed=false;$('answer-message').textContent='Đã ghi nhận. Hãy đối chiếu với phần chốt kiến thức.';$('answer-message').className='feedback good';renderResponse();$('reveal').focus({preventScroll:true})}
+function updateFullscreen(){const on=!!document.fullscreenElement||document.documentElement.classList.contains('full-window');$('fullscreen').setAttribute('aria-pressed',String(on));$('fullscreen-label').textContent=on?'Thoát toàn màn hình':'Toàn màn hình'}
+async function fullscreen(){if(document.fullscreenElement){await document.exitFullscreen();return}if(document.documentElement.classList.contains('full-window')){document.documentElement.classList.remove('full-window');updateFullscreen();return}try{await document.documentElement.requestFullscreen()}catch(e){document.documentElement.classList.add('full-window');announce('Đã mở rộng hoạt động trong cửa sổ hiện tại.')}updateFullscreen()}
+document.addEventListener('fullscreenchange',updateFullscreen);document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.documentElement.classList.remove('full-window');updateFullscreen()}});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('button[data-action]');if(!b||b.disabled)return;const a=b.dataset.action;
+ if(a==='save')save(Number(b.dataset.card));else if(a==='compare')stage(2);else if(a==='response')stage(3);else if(a==='nav')stage(Number(b.dataset.stage));else if(a==='rotate'||a==='flip')transformPose(a);else if(a==='nudge')nudge(Number(b.dataset.x),Number(b.dataset.y));else if(a==='reset-pose')resetPose();else if(a==='check')check();else if(a==='back')stage(2);else if(a==='fullscreen')fullscreen();else if(a==='restart')$('restart-dialog').showModal();else if(a==='cancel')$('restart-dialog').close();else if(a==='confirm-restart'){$('restart-dialog').close();initialize();$('main-title').scrollIntoView({block:'start',behavior:'auto'})}
+ else if(a==='hint')$('hint').hidden=!$('hint').hidden;else if(a==='edit'){state.submitted=false;state.revealed=false;renderResponse();$('answer-message').textContent='';$('answer').focus()}
+ else if(a==='reveal'&&state.submitted){state.revealed=true;renderResponse();$('hint').hidden=true;$('knowledge-heading').focus({preventScroll:true});$('knowledge').scrollIntoView({block:'nearest',behavior:'auto'})}
+});
+document.addEventListener('input',e=>{if(e.target.matches('[data-card][data-param]'))updateValues(Number(e.target.dataset.card))});
+$('answer').addEventListener('input',function(){state.answer=this.value;$('counter').textContent=this.value.length+' / 400';$('answer-message').textContent=''});$('answer-form').addEventListener('submit',submit);
+function pointIn(svg,e){const m=svg.getScreenCTM();return new DOMPoint(e.clientX,e.clientY).matrixTransform(m.inverse())}
+document.addEventListener('pointerdown',e=>{
+ const n=active();if(state.stage!==1||n<0||!e.target.closest('#scene-'+n+' [data-handle]')||e.button!==0)return;
+ constructionDrag={n,type:e.target.closest('[data-handle]').dataset.handle,pointer:e.pointerId};$('app').setPointerCapture(e.pointerId);e.preventDefault();
+});
+document.addEventListener('pointermove',e=>{
+ if(!constructionDrag||e.pointerId!==constructionDrag.pointer)return;const n=constructionDrag.n,svg=$('scene-'+n),p=pointIn(svg,e),scale=Number(svg.dataset.scale),cx=Number(svg.dataset.cx),cy=Number(svg.dataset.cy);
+ const screenVector={x:(p.x-240)/scale+cx,y:(p.y-157)/scale+cy},inverse=n===0?I:[SECOND[0],SECOND[2],SECOND[1],SECOND[3]],q=apply(screenVector,inverse);
+ let vals=state.values[n].slice();
+ if(CFG.kind==='sas'){vals=[clamp(Math.hypot(q.x,q.y),1,5),clamp(Math.atan2(-q.y,q.x)/RAD,15,145)];vals[0]=Math.abs(vals[0]-3)<.12?3:Math.round(vals[0]*10)/10;vals[1]=Math.abs(vals[1]-60)<3?60:Math.round(vals[1])}
+ else{const j=constructionDrag.type==='ray-b'?0:1;let angle=j===0?Math.atan2(-q.y,q.x)/RAD:Math.atan2(-q.y,3-q.x)/RAD;vals[j]=clamp(Math.round(angle),10,120);if(Math.abs(vals[j]-CFG.target[j])<3)vals[j]=CFG.target[j]}
+ state.values[n]=vals;for(let j=0;j<2;j++)$('value-'+n+'-'+j).value=vals[j];renderScene(n);e.preventDefault();
+});
+document.addEventListener('pointerup',e=>{if(constructionDrag&&e.pointerId===constructionDrag.pointer)constructionDrag=null});document.addEventListener('pointercancel',()=>{constructionDrag=null});
+$('board').addEventListener('pointerdown',e=>{if(state.matched||e.button!==0||!e.target.closest('#moving'))return;const p=pointIn($('board'),e);drag={pointer:e.pointerId,rotate:!!e.target.closest('[data-rotate]'),dx:p.x-state.pose.x,dy:p.y-state.pose.y,start:Math.atan2(p.y-state.pose.y,p.x-state.pose.x)/RAD,angle:state.pose.angle};$('board').setPointerCapture(e.pointerId);e.preventDefault()});
+$('board').addEventListener('pointermove',e=>{if(!drag||e.pointerId!==drag.pointer)return;const p=pointIn($('board'),e);if(drag.rotate){let a=norm(drag.angle+Math.atan2(p.y-state.pose.y,p.x-state.pose.x)/RAD-drag.start);for(const snap of [0,90,-90,180])if(Math.abs(norm(a-snap))<3)a=snap;state.pose.angle=a}else{state.pose.x=p.x-drag.dx;state.pose.y=p.y-drag.dy}clampPose();drawBoard();e.preventDefault()});
+$('board').addEventListener('pointerup',e=>{if(!drag||e.pointerId!==drag.pointer)return;drag=null;state.attempts++;tryMatch();drawBoard()});$('board').addEventListener('pointercancel',()=>{drag=null;drawBoard()});
+$('board').addEventListener('keydown',e=>{const arrows={ArrowLeft:[-20,0],ArrowRight:[20,0],ArrowUp:[0,-20],ArrowDown:[0,20]};if(arrows[e.key]){e.preventDefault();nudge(...arrows[e.key])}else if(e.key.toLowerCase()==='r'){e.preventDefault();transformPose('rotate')}else if(e.key.toLowerCase()==='f'){e.preventDefault();transformPose('flip')}});
+new ResizeObserver(()=>{if(state&&state.stage===2){layoutBoard();drawBoard()}}).observe($('board-wrap'));
+function initialize(){state=fresh();layout=null;drag=null;constructionDrag=null;$('answer').value='';$('counter').textContent='0 / 400';$('answer-message').textContent='';$('hint').hidden=true;$('measurements').hidden=true;$('to-response').disabled=true;$('match-status').textContent='Chồng đúng các đỉnh A–A′, B–B′, C–C′.';renderCards();renderResponse();stage(1,false)}
+$('given').innerHTML=CFG.kind==='sas'?'<span>AB = A′B′ = 4 cm</span><span>AC = A′C′ = 3 cm</span><span>'+hat('BAC')+' = '+hat('B′A′C′')+' = 60°</span>':'<span>BC = B′C′ = 3 cm</span><span>'+hat('ABC')+' = '+hat('A′B′C′')+' = 80°</span><span>'+hat('ACB')+' = '+hat('A′C′B′')+' = 40°</span>';
+$('build-note').textContent=CFG.kind==='sas'?'Điều chỉnh cạnh AC và góc ở A, rồi nối B với C.':'Điều chỉnh hai tia ở B và C, rồi xác định giao điểm A.';
+$('question').textContent=CFG.question;$('hint').textContent=CFG.hint;$('knowledge-heading').textContent=CFG.theoremTitle;$('theorem').textContent=CFG.theorem;$('position-note').innerHTML=CFG.kind==='sas'?hat('BAC')+' là góc xen giữa hai cạnh AB và AC.':hat('ABC')+' và '+hat('ACB')+' là hai góc kề cạnh BC.';
+$('application').textContent='Vậy ΔABC = ΔA′B′C′ ('+CFG.short+').';$('source').textContent=CFG.source;
+initialize();
+})();
+</script>
+</body></html>
